@@ -15,6 +15,7 @@ DB_PORT = os.getenv("PORT")
 DB_USER = os.getenv("USER")
 DB_PASSWORD = os.getenv("PASSWORD")
 DB_DATABASE = os.getenv("DATABASE")
+STATION_ID = os.getenv("STATION_ID")
 
 
 def create_app():

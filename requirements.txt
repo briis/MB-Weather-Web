@@ -11,12 +11,13 @@ mock
 mysql-connector-python
 pyflakes
 pylint
+pymeteobridgesql
 pymysql
 pytest
 pytest-asyncio
 pytest-cov
 python-dotenv
-openpyxl
+pyVisualCrossing
 requests
 requests-toolbelt
 ruff

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from flask import Blueprint, render_template, request, jsonify
+from pymeteobridgesql import MeteobridgeSQL
 
 # from . import db
 # from .models import (
