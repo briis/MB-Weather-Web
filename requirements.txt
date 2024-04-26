@@ -1,8 +1,9 @@
 aiohttp
+asyncio
 black
 coverage
 flake8
-flask
+flask[async]
 flask-login
 flask-sqlalchemy
 gunicorn
