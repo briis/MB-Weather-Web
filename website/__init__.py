@@ -6,9 +6,9 @@ import os
 
 from dotenv import load_dotenv
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
+from flask_mysqldb import MySQL, MySQLdb
 
-db = SQLAlchemy()
+mysql = MySQL()
 load_dotenv()
 DB_HOST = os.getenv("HOST")
 DB_PORT = os.getenv("PORT")
