@@ -1,9 +1,9 @@
 services:
-  hr_system:
-    container_name: HR-System
-    build: ./hrm
+  vejr_web:
+    container_name: Vejr Website
+    build: ./vejr_web
     ports:
-      - 5002:5002
+      - 5003:5003
     environment:
       - TZ=Europe/Copenhagen
     depends_on:
