@@ -1,0 +1,13 @@
+services:
+  hr_system:
+    container_name: HR-System
+    build: ./hrm
+    ports:
+      - 5002:5002
+    environment:
+      - TZ=Europe/Copenhagen
+    depends_on:
+      - redis
+  redis:
+    container_name: redis
+    image: redis:alpine
