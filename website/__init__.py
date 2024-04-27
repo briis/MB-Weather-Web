@@ -6,38 +6,25 @@ import os
 
 from dotenv import load_dotenv
 from flask import Flask
-from flask_mysqldb import MySQL, MySQLdb
 
-mysql = MySQL()
-load_dotenv()
-DB_HOST = os.getenv("HOST")
-DB_PORT = os.getenv("PORT")
-DB_USER = os.getenv("USER")
-DB_PASSWORD = os.getenv("PASSWORD")
-DB_DATABASE = os.getenv("DATABASE")
-STATION_ID = os.getenv("STATION_ID")
-
+from .const import VERSION, WEB_TITLE
 
 def create_app():
+    load_dotenv()
+
     """Create Flask App."""
     app = Flask(__name__)
     app.config["SECRET_KEY"] = "e0c7d617-bfa6-486c-b11d-9d60eb13c4fe"
-    # app.config["MYSQL_HOST"] = DB_HOST
-    # app.config["MYSQL_USER"] = DB_USER
-    # app.config["MYSQL_PASSWORD"] = DB_PASSWORD
-    # app.config["MYSQL_DB"] = DB_DATABASE
-    # app.config["SQLALCHEMY_DATABASE_URI"] = (
-    #     f"mysql+pymysql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_DATABASE}"
-    # )
-    # app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-    # db.init_app(app)
+    app.config["MYSQL_HOST"] = os.getenv("HOST")
+    app.config["MYSQL_USER"] = os.getenv("USER")
+    app.config["MYSQL_PASSWORD"] = os.getenv("PASSWORD")
+    app.config["MYSQL_DB"] = os.getenv("DATABASE")
+    app.config["STATION_ID"] = os.getenv("STATION_ID")
+    app.config["VERSION"] = VERSION
+    app.config["WEB_TITLE"] = WEB_TITLE
 
     from .views import views
 
     app.register_blueprint(views, url_prefix="/")
-
-    # with app.app_context():
-    #     db.create_all()
-
 
     return app
