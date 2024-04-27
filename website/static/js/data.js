@@ -4,6 +4,8 @@
 // *************************************
 const degrees = `<span class="text-secondary">` + String.fromCharCode(176) + `</span>`;
 const windspeedUnit = `<sup class="text-secondary">m/s</sup>`;
+const rainUnit = `<sup class="text-secondary">mm</sup>`;
+const rainRateUnit = `<sup class="text-secondary">mm/t</sup>`;
 
 let windirGauge;
 
@@ -32,22 +34,26 @@ function getWeatherData() {
         },
         dataType: 'json',
         success: function (data) {
+            // ** Temperature Widget **
             document.getElementById("valTemperature").innerHTML = data.temperature + degrees;
             document.getElementById("valFeelsLike").innerHTML = data.feels_like_temperature + degrees;
+            document.getElementById("valTempMax").innerHTML = data.tempmax + degrees;
+            document.getElementById("valTempMin").innerHTML = data.tempmin + degrees;
             document.getElementById("valWindgust").innerHTML = data.windgust + windspeedUnit;
+            // ** Wind Widget **
             windirGauge.value = data.windbearing;
             windirGauge.update({
-                units: `${data.windspeedavg} m/s`,
+                units: `${data.windspeedavg.toFixed(1)} m/s`,
                 title: `${data.windbearing}${String.fromCharCode(176)}`,
             });
-            // windirGauge.update({
-            //     units: `${data.windspeedavg} ${windspeedUnit}`,
-            //     title: `${data.windbearing}${degrees}`,
-            // });
             document.getElementById("valWinddir").innerHTML = `${windDegreeToCardinal(data.windbearing)}`;
+            // ** Rain Widget **
+            document.getElementById("valRainToday").innerHTML = data.raintoday.toFixed(1) + rainUnit;
+            document.getElementById("valRainForecastToday").innerHTML = '';
+            document.getElementById("valRainRate").innerHTML = data.rainrate.toFixed(1) + rainRateUnit;
         },
         error: function (error) {
-            console.log(error);
+            console.log('Data load error: ' + error);
         }
     });
 }
@@ -124,6 +130,17 @@ function cssVar(name, value) {
     if (name[0] != '-') name = '--' + name //allow passing with or without --
     if (value) document.documentElement.style.setProperty(name, value)
     return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+}
+
+// Translate Feels Like Temperature to Text
+function feelsLikeToText(temp) {
+    if (temp <= 10) {
+        return `Vind får det til at føles koldere`;
+    }
+    if (temp >= 26) {
+        return `Høj luftfugtighed får det til at føles varmere`;
+    }
+    return ``;
 }
 
 // Convert Wind Bearing degrees to Wind Cardinal

@@ -6,34 +6,57 @@
     <div class="col mb-4">
       <div class="card">
         <div class="d-flex justify-content-between">
-          <div class="p-2"><span class="material-icons circle-font">device_thermostat</span></div>
-          <div class="p-2 fs-6 fw-light">Temperatur</div>
+          <div class="p-2"><span class="material-icons circle-font bg-blue">device_thermostat</span></div>
+          <div class="p-2 fs-6 fw-light">TEMPERATUR</div>
         </div>
         <div class="card-body">
           <div class="position-absolute top-50 start-50 translate-middle fs-0 fw-lighter" id="valTemperature"></div>
-          <div class="position-absolute bottom-0 start-0 pb-2 px-2 fs-8">
+          <div class="position-absolute bottom-0 start-0 pb-2 px-2 fs-7 fw-lighter">
             <div class="pb-0">Føles som</div>
             <div class="fg-blue" id="valFeelsLike"></div>
           </div>
-          <div class="position-absolute bottom-0 end-0 pb-2 px-2 fs-8">Noget tekst</div>
+          <div class="position-absolute bottom-0 end-0 pb-2 px-2 fs-7 fw-lighter">
+            <div class="pb-0">Høj | Lav i dag</div>
+            <div class="text-end"><span class="fg-red" id="valTempMax"></span> | <span class="fg-blue"
+                id="valTempMin"></span></div>
+          </div>
         </div>
       </div>
     </div>
     <div class="col mb-4">
       <div class="card">
         <div class="d-flex justify-content-between">
-          <div class="p-2"><span class="material-icons circle-font">air</span></div>
-          <div class="p-2 fs-6 fw-light">Vind</div>
+          <div class="p-2"><span class="material-icons circle-font bg-green">air</span></div>
+          <div class="p-2 fs-6 fw-light">VIND</div>
         </div>
         <div class="card-body">
           <canvas class="position-absolute top-50 start-50 translate-middle" id="valWindbearing"></canvas>
-          <div class="position-absolute bottom-0 start-0 pb-2 ps-2 fs-8">
+          <div class="position-absolute bottom-0 start-0 pb-2 ps-2 fs-7 fw-lighter">
             <div class="pb-0">Vind fra</div>
             <div class="fg-blue" id="valWinddir"></div>
           </div>
-          <div class="position-absolute bottom-0 end-0 pb-2 pe-2 fs-8">
+          <div class="position-absolute bottom-0 end-0 pb-2 pe-2 fs-7 fw-lighter">
             <div class="pb-0">Vindstød</div>
-            <div class="fg-blue" id="valWindgust"></div>
+            <div class="text-end fg-blue" id="valWindgust"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col mb-4">
+      <div class="card">
+        <div class="d-flex justify-content-between">
+          <div class="p-2"><span class="material-icons circle-font bg-blue">water_drop</span></div>
+          <div class="px-2 fs-6 fw-light">NEDBØR</div>
+        </div>
+        <div class="card-body">
+          <div class="d-flex flex-column align-items-center m-0 p-0">
+            <div class="fs-0 fw-lighter" id="valRainToday"></div>
+            <div class="fs-7 fw-lighter color-disabled mt--3">siden midnat</div>
+            <div class="fs-7 fw-lighter color-disabled mt-0" id="valRainForecastToday"></div>
+          </div>
+          <div class="position-absolute bottom-0 start-0 pb-2 ps-2 fs-7 fw-lighter">
+            <div class="pb-0">Intensitet</div>
+            <div class="fg-blue" id="valRainRate"></div>
           </div>
         </div>
       </div>

@@ -14,12 +14,12 @@
 
 
 .bg-blue {
-    background-color: var(--color-blue);
+    background: var(--color-blue);
     color: var(--color-white);
 }
 
 .bg-green {
-    background-color: var(--color-green);
+    background: var(--color-green);
     color: var(--color-white);
 }
 
@@ -31,17 +31,21 @@
     color: var(--color-green);
 }
 
+.fg-red {
+    color: var(--color-red);
+}
+
 .card-body {
-    min-height: 180px;
+    min-height: 160px;
 }
 
 .circle-font {
     border-radius: 50%;
     width: 28px;
     height: 28px;
-    background: var(--color-blue);
+    /* background: var(--color-blue); */
     border: 0;
-    color: var(--color-white);
+    /* color: var(--color-white); */
     font-size: 16px;
     display: flex;
     align-items: center;
@@ -58,4 +62,8 @@
 
 .fs-8 {
     font-size: 0.7rem;
+}
+
+.mt--3 {
+    margin-top: -1rem;
 }
