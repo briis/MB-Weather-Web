@@ -2,24 +2,29 @@
 %}
 
 <div class="container">
-  <div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 mt-2">
+  <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 mt-2">
     <div class="col mb-4">
       <div class="card">
-        <div class="d-flex justify-content-between">
-          <div class="p-2"><span class="material-icons circle-font bg-blue">device_thermostat</span></div>
-          <div class="p-2 fs-6 fw-light">TEMPERATUR</div>
+        <div class="card-header bg-body p-1">
+          <div class="d-flex justify-content-between">
+            <div class=""><span class="material-icons circle-font bg-blue">device_thermostat</span></div>
+            <div class="fs-7 text-secondary text-uppercase">Temperatur</div>
+          </div>
         </div>
         <div class="card-body">
           <div class="position-absolute top-50 start-50 translate-middle fs-0 fw-lighter" id="valTemperature"></div>
-          <div class="position-absolute bottom-0 start-0 pb-2 px-2 fs-7 fw-lighter">
+          <div class="position-absolute bottom-0 start-0 pb-3 px-2 fs-7 fw-lighter">
             <div class="pb-0">Føles som</div>
             <div class="fg-blue" id="valFeelsLike"></div>
           </div>
-          <div class="position-absolute bottom-0 end-0 pb-2 px-2 fs-7 fw-lighter">
+          <div class="position-absolute bottom-0 end-0 pb-3 px-2 fs-7 fw-lighter">
             <div class="pb-0">Høj | Lav i dag</div>
             <div class="text-end"><span class="fg-red" id="valTempMax"></span> | <span class="fg-blue"
                 id="valTempMin"></span></div>
           </div>
+        </div>
+        <div class="card-footer bg-body fs-7">
+          Dagsoversigt
         </div>
       </div>
     </div>
@@ -27,16 +32,16 @@
       <div class="card">
         <div class="d-flex justify-content-between">
           <div class="p-2"><span class="material-icons circle-font bg-green">air</span></div>
-          <div class="p-2 fs-6 fw-light">VIND</div>
+          <div class="p-2 fs-6 text-secondary text-uppercase">Vind</div>
         </div>
         <div class="card-body">
           <canvas class="position-absolute top-50 start-50 translate-middle" id="valWindbearing"></canvas>
           <div class="position-absolute bottom-0 start-0 pb-2 ps-2 fs-7 fw-lighter">
-            <div class="pb-0">Vind fra</div>
+            <div class="pb-0 text-secondary">Vind fra</div>
             <div class="fg-blue" id="valWinddir"></div>
           </div>
           <div class="position-absolute bottom-0 end-0 pb-2 pe-2 fs-7 fw-lighter">
-            <div class="pb-0">Vindstød</div>
+            <div class="pb-0 text-secondary">Vindstød</div>
             <div class="text-end fg-blue" id="valWindgust"></div>
           </div>
         </div>
@@ -46,23 +51,81 @@
       <div class="card">
         <div class="d-flex justify-content-between">
           <div class="p-2"><span class="material-icons circle-font bg-blue">water_drop</span></div>
-          <div class="px-2 fs-6 fw-light">NEDBØR</div>
+          <div class="px-2 mt-2 fs-6 text-secondary text-uppercase">Nedbør</div>
         </div>
         <div class="card-body">
-          <div class="d-flex flex-column align-items-center m-0 p-0">
+          <div class="d-flex flex-column align-items-start m-0 p-0">
             <div class="fs-0 fw-lighter" id="valRainToday"></div>
-            <div class="fs-7 fw-lighter color-disabled mt--3">siden midnat</div>
-            <div class="fs-7 fw-lighter color-disabled mt-0" id="valRainForecastToday"></div>
+            <div class="fs-7 fw-lighter text-secondary mt--3">siden midnat</div>
+            <div class="fs-7 fw-lighter text-secondary mt-0" id="valRainForecastToday"></div>
           </div>
-          <div class="position-absolute bottom-0 start-0 pb-2 ps-2 fs-7 fw-lighter">
-            <div class="pb-0">Intensitet</div>
+          <div class="position-absolute bottom-0 start-0 pb-2 ps-3 fs-7 fw-lighter">
+            <div class="pb-0 text-secondary">Intensitet</div>
             <div class="fg-blue" id="valRainRate"></div>
           </div>
         </div>
       </div>
     </div>
+    <div class="col mb-4">
+      <div class="card">
+        <div class="d-flex justify-content-between">
+          <div class="p-2"><span class="material-icons circle-font bg-orange">wb_twilight</span></div>
+          <div class="px-2 mt-2 fs-6 text-secondary text-uppercase" id="valSunHeader"></div>
+        </div>
+        <div class="card-body">
+          <div class="d-flex flex-column align-items-center m-0 p-0">
+            <div class="fs-0 fw-lighter" id="valSunTime"></div>
+            <div class="fs-7 mt--3" id="valSunIcon"></div>
+          </div>
+          <div class="position-absolute bottom-0 start-0 pb-2 ps-2 fs-7 fw-lighter">
+            <div class="pb-0 text-secondary" id="valSunNextChange"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col mb-4">
+      <div class="card">
+        <div class="d-flex justify-content-between">
+          <div class="p-2"><span class="material-icons circle-font bg-orange">wb_sunny</span></div>
+          <div class="px-2 mt-2 fs-6 text-secondary text-uppercase">UV Index</div>
+        </div>
+        <div class="card-body">
+          <div class="d-flex flex-column align-items-start m-0 p-0">
+            <div class="lh-1 fs-0 text-secondary fw-lighter" id="valUvIndex"></div>
+            <div class="lh-1 fs-6 text-secondary" id="valUvDescription"></div>
+            <div class="lh-1 bar-container">
+              <div class="uvvalue" id="valUvDot"></div>
+              <div class="uvbar"></div>
+            </div>
+          </div>
+          <div class="position-absolute bottom-0 start-0 pb-2 ps-3 fs-7 fw-lighter">
+            <div class="pb-0 text-secondary">Solstråling</div>
+            <div class="fg-blue" id="valSolarRad"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col mb-4">
+      <div class="card">
+        <div class="d-flex justify-content-between">
+          <div class="p-2"><span class="material-icons circle-font bg-green">grain</span></div>
+          <div class="px-2 mt-2 fs-6 text-secondary text-uppercase">Luftkvalitet</div>
+        </div>
+        <div class="card-body">
+          <div class="d-flex flex-column align-items-start m-0 p-0">
+            <div class="lh-1 fs-0 fw-lighter" id="valAqi"></div>
+            <div class="lh-1 fs-6 text-secondary" id="valAqiDescription"></div>
+            <div class="lh-1 bar-container">
+              <div class="aqivalue" id="valAqiDot"></div>
+              <div class="aqibar"></div>
+            </div>
+          </div>
+          <div class="position-absolute bottom-0 start-0 pb-2 ps-3 fs-7 fw-lighter">
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-
 </div>
 
 {% endblock %}

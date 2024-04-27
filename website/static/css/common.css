@@ -1,15 +1,67 @@
 :root {
     --font-family: Roboto, sans-serif;
+    --color-amber: rgba(255, 193, 8, 1);
     --color-blue: rgba(32, 151, 243, 1);
+    --color-brown: rgba(121, 86, 72, 1);
     --color-blue-light: rgba(0, 168, 244, 1);
-    --color-disabled: rgba(189, 189, 189, 1);
+    --color-disabled: rgba(138, 138, 138, 1);
     --color-green: rgba(76, 175, 80, 1);
     --color-grey: rgba(158, 158, 158, 1);
     --color-grey-dark: rgba(33, 33, 33, 1);
     --color-grey-light: rgba(224, 224, 224, 1);
+    --color-purple: rgba(156, 39, 176, 1);
     --color-red: rgba(245, 67, 54, 1);
+    --color-orange: rgba(255, 152, 0, 1);
     --color-transparent: #00;
     --color-white: rgba(255, 255, 255, 1);
+}
+
+.bar-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+    height: 12px;
+    width: 100%;
+}
+
+.bar-container .uvvalue {
+    position: absolute;
+    left: 0%;
+    top: 7;
+    background-color: var(--color-white);
+    border-radius: 50%;
+    height: 9px;
+    width: 9px;
+    box-shadow: rgba(0, 0, 0, 1) 0 0 4px;
+    display: inline-block;
+}
+
+.bar-container .uvbar {
+    height: 8px;
+    width: 100%;
+    background-color: var(--color-red);
+    background-image: linear-gradient(to right, var(--color-green), var(--color-amber), var(--color-orange), var(--color-red), var(--color-purple));
+}
+
+.bar-container .aqivalue {
+    position: absolute;
+    left: 0%;
+    top: 7;
+    background-color: var(--color-white);
+    border-radius: 50%;
+    height: 9px;
+    width: 9px;
+    box-shadow: rgba(0, 0, 0, 1) 0 0 4px;
+    display: inline-block;
+}
+
+.bar-container .aqibar {
+    height: 8px;
+    width: 100%;
+    background-color: var(--color-red);
+    background-image: linear-gradient(to right, var(--color-green), var(--color-amber), var(--color-orange), var(--color-red), var(--color-purple), var(--color-brown));
 }
 
 
@@ -23,16 +75,9 @@
     color: var(--color-white);
 }
 
-.fg-blue {
-    color: var(--color-blue);
-}
-
-.fg-green {
-    color: var(--color-green);
-}
-
-.fg-red {
-    color: var(--color-red);
+.bg-orange {
+    background: var(--color-orange);
+    color: var(--color-white);
 }
 
 .card-body {
@@ -43,13 +88,36 @@
     border-radius: 50%;
     width: 28px;
     height: 28px;
-    /* background: var(--color-blue); */
     border: 0;
-    /* color: var(--color-white); */
     font-size: 16px;
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.fg-blue {
+    color: var(--color-blue);
+}
+
+.fg-green {
+    color: var(--color-green);
+}
+
+.fg-grey {
+    color: var(--color-grey);
+}
+
+.fg-grey-light {
+    color: var(--color-grey-light);
+}
+
+.fg-orange {
+    color: var(--color-orange);
+
+}
+
+.fg-red {
+    color: var(--color-red);
 }
 
 .fs-0 {
@@ -62,6 +130,10 @@
 
 .fs-8 {
     font-size: 0.7rem;
+}
+
+.mt--2 {
+    margin-top: -0.8rem;
 }
 
 .mt--3 {
