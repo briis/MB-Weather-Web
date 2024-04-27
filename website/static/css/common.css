@@ -1,9 +1,61 @@
+:root {
+    --font-family: Roboto, sans-serif;
+    --color-blue: rgba(32, 151, 243, 1);
+    --color-blue-light: rgba(0, 168, 244, 1);
+    --color-disabled: rgba(189, 189, 189, 1);
+    --color-green: rgba(76, 175, 80, 1);
+    --color-grey: rgba(158, 158, 158, 1);
+    --color-grey-dark: rgba(33, 33, 33, 1);
+    --color-grey-light: rgba(224, 224, 224, 1);
+    --color-red: rgba(245, 67, 54, 1);
+    --color-transparent: #00;
+    --color-white: rgba(255, 255, 255, 1);
+}
+
+
 .bg-blue {
-    background-color: rgb(32, 151, 243);
-    color: white;
+    background-color: var(--color-blue);
+    color: var(--color-white);
 }
 
 .bg-green {
-    background-color: rgb(76, 175, 80);
-    color: white;
+    background-color: var(--color-green);
+    color: var(--color-white);
+}
+
+.fg-blue {
+    color: var(--color-blue);
+}
+
+.fg-green {
+    color: var(--color-green);
+}
+
+.card-body {
+    min-height: 180px;
+}
+
+.circle-font {
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    background: var(--color-blue);
+    border: 0;
+    color: var(--color-white);
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.fs-0 {
+    font-size: 3rem;
+}
+
+.fs-7 {
+    font-size: 0.875rem;
+}
+
+.fs-8 {
+    font-size: 0.7rem;
 }
