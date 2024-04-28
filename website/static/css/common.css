@@ -80,6 +80,11 @@
     color: var(--color-white);
 }
 
+.bg-red {
+    background: var(--color-red);
+    color: var(--color-white);
+}
+
 .card-body {
     height: 160px;
 }

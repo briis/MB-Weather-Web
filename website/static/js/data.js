@@ -3,19 +3,23 @@
 // GLOBAL CONSTANTS AND VARIABLES
 // *************************************
 const degrees = `<span class="text-secondary">` + String.fromCharCode(176) + `</span>`;
-const windspeedUnit = `<sup class="text-secondary">m/s</sup>`;
+const pressureUnit = `<sup class="text-secondary">hPa</sup>`;
 const rainUnit = `<sup class="text-secondary">mm</sup>`;
 const rainRateUnit = `<sup class="text-secondary">mm/t</sup>`;
 const SolarRadUnit = `<sup class="text-secondary">W/m²</sup>`;
+const visibilityUnit = `<sup class="text-secondary">km</sup>`;
+const windspeedUnit = `<sup class="text-secondary">m/s</sup>`;
 const uviMax = 12;
 
 let windirGauge;
+let pressureGauge;
 
 // *************************************
 // MAIN FUNCTIONS
 // *************************************
 $('document').ready(function () {
     windirGauge = createWindDirGauge();
+    pressureGauge = createPressureGauge();
     getWeatherData();
     getDailyForecastData();
     getHourlyForecastData();
@@ -58,7 +62,7 @@ function getWeatherData() {
             document.getElementById("valWinddir").innerHTML = `${windDegreeToCardinal(data.windbearing)}`;
             // ** Rain Widget **
             document.getElementById("valRainToday").innerHTML = data.raintoday.toFixed(1) + rainUnit;
-            document.getElementById("valRainForecastToday").innerHTML = '';
+            // document.getElementById("valRainForecastToday").innerHTML = '';
             document.getElementById("valRainRate").innerHTML = data.rainrate.toFixed(1) + rainRateUnit;
             // ** UV Index Widget **
             document.getElementById("valUvIndex").innerHTML = data.uv.toFixed(0);
@@ -69,6 +73,19 @@ function getWeatherData() {
             document.getElementById("valAqi").innerHTML = data.aqi.toFixed(0);
             document.getElementById("valAqiDescription").innerHTML = aqiValueToText(data.aqi);
             document.getElementById('valAqiDot').style.left = `${aqiDotPosition(data.aqi)}%`;
+            // ** Humidity Widget **
+            document.getElementById("valHumidity").innerHTML = data.humidity.toFixed(0) + '%';
+            document.getElementById("valDewPointText").innerHTML = `Dugpunktet er ${data.dewpoint.toFixed(0)}${degrees} lige nu.`;
+            // ** Pressure Widget **
+            pressureGauge.value = data.sealevelpressure;
+            pressureGauge.update();
+            pressure_values = pressureTrend(data.pressuretrend);
+            document.getElementById('valPressureTrend').innerHTML = `<span class="material-icons material-font fs-8 ${pressure_values[2]}">${pressure_values[1]}</span> ${pressure_values[0]}`;
+            document.getElementById("valPressure").innerHTML = data.sealevelpressure.toFixed(0) + pressureUnit;
+            // ** Visibility Widget **
+            document.getElementById("valVisibility").innerHTML = data.visibility.toFixed(0) + visibilityUnit;
+            document.getElementById("valVisibilityText").innerHTML = visibilityText(data.visibility);
+
         },
         error: function (error) {
             console.log('Data load error: ' + error);
@@ -202,6 +219,63 @@ function createWindDirGauge() {
     return gauge;
 }
 
+function createPressureGauge() {
+    var gauge = new RadialGauge({
+        renderTo: 'valPressureGauge',
+        useMinPath: true,
+        width: 130,
+        height: 130,
+        minValue: 960,
+        maxValue: 1060,
+        majorTicks: [
+            "960",
+            "980",
+            "1000",
+            "1020",
+            "1040",
+            "1060"
+        ],
+        minorTicks: 22,
+        ticksAngle: 270,
+        startAngle: 45,
+        strokeTicks: false,
+        highlights: false,
+        colorPlate: cssVar("color-white"),
+        colorMajorTicks: cssVar("color-grey"),
+        colorMinorTicks: cssVar("color-grey-light"),
+        colorNumbers: cssVar("color-grey"),
+        colorNeedle: cssVar("color-red"),
+        colorNeedleEnd: cssVar("color-red"),
+        colorTitle: cssVar("color-blue"),
+        colorUnits: cssVar("color-blue"),
+        fontTitleSize: 35,
+        fontTitleStyle: "normal",
+        fontUnitsSize: 35,
+        fontUnitsStyle: "normal",
+        fontNumbersSize: 30,
+        valueBox: false,
+        needleCircleSize: 12,
+        needleCircleOuter: false,
+        needleCircleInner: true,
+        colorNeedleCircleInner: cssVar("color-disabled"),
+        colorNeedleCircleInnerEnd: cssVar("color-disabled"),
+        animationRule: "linear",
+        needleType: "arrow",
+        needleStart: 30,
+        needleEnd: 95,
+        needleWidth: 4,
+        borders: true,
+        borderInnerWidth: 0,
+        borderMiddleWidth: 0,
+        borderOuterWidth: 0,
+        colorNeedleShadowDown: cssVar("color-transparent"),
+        borderShadowWidth: 0,
+        animationDuration: 1500
+
+    }).draw();
+    return gauge;
+}
+
 // *************************************
 // HELPER FUNCTIONS
 // *************************************
@@ -242,7 +316,26 @@ function feelsLikeToText(temp) {
     return ``;
 }
 
+// Calculate Pressure Trend
+function pressureTrend(value) {
+    value = parseFloat(value);
+    if (value > 0) {
+        return ["Stiger", "trending_up", "fg-green"];
+    } else if (value < 0) {
+        return ["Falder", "trending_down", "fg-red"];
+    }
 
+    return ["Stabil", "trending_flat", "text-secondary"];
+}
+
+// Get Visibility Text
+function visibilityText(value) {
+    value = parseFloat(value);
+    if (value < 1) { return 'Det er tåget tåget'; }
+    if (value >= 1 && value < 5) { return 'Der er dårlig sigtbarhed'; }
+    if (value >= 5 && value < 10) { return 'Sigtbarheden er moderat'; }
+    return 'Det er helt klart lige nu';
+}
 // Get Uvi Dot position
 function uviDotPosition(uvi) {
     if (uvi == 0) { return 0; }

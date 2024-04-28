@@ -11,7 +11,7 @@
         </div>
         <div class="card-body p-1">
           <div class="d-flex flex-column">
-            <div class="mb-auto px-2 pt-2 fs-0 fw-lighter" id="valTemperature"></div>
+            <div class="mb-auto px-2 pt-2 fs-0 text-secondary fw-lighter align-self-center" id="valTemperature"></div>
             <div class="d-flex flex-row justify-content-between pt-4">
               <div class="ps-2 fs-7 fw-lighter">
                 <div class="pb-0">Føles som</div>
@@ -58,104 +58,180 @@
       </div>
     </div>
 
-
-    <!-- <div class="col mb-4">
-      <div class="card">
-        <div class="d-flex justify-content-between">
-          <div class="p-2"><span class="material-icons circle-font bg-green">air</span></div>
-          <div class="p-2 fs-6 text-secondary text-uppercase">Vind</div>
-        </div>
-        <div class="card-body">
-          <canvas class="position-absolute top-50 start-50 translate-middle" id="valWindbearing"></canvas>
-          <div class="position-absolute bottom-0 start-0 pb-2 ps-2 fs-7 fw-lighter">
-            <div class="pb-0 text-secondary">Vind fra</div>
-            <div class="fg-blue" id="valWinddir"></div>
-          </div>
-          <div class="position-absolute bottom-0 end-0 pb-2 pe-2 fs-7 fw-lighter">
-            <div class="pb-0 text-secondary">Vindstød</div>
-            <div class="text-end fg-blue" id="valWindgust"></div>
-          </div>
-        </div>
-      </div>
-    </div> -->
     <div class="col mb-4">
       <div class="card">
         <div class="d-flex justify-content-between">
           <div class="p-2"><span class="material-icons circle-font bg-blue">water_drop</span></div>
           <div class="px-2 mt-2 fs-6 text-secondary text-uppercase">Nedbør</div>
         </div>
-        <div class="card-body">
-          <div class="d-flex flex-column align-items-start m-0 p-0">
-            <div class="fs-0 fw-lighter" id="valRainToday"></div>
-            <div class="fs-7 fw-lighter text-secondary mt--3">siden midnat</div>
-            <div class="fs-7 fw-lighter text-secondary mt-0" id="valRainForecastToday"></div>
+        <div class="card-body p-1">
+          <div class="d-flex flex-column">
+            <div class="mb-auto px-2 pt-2 text-secondary fs-0 fw-lighter" id="valRainToday"></div>
+            <div class="px-3 fs-7 fw-lighter text-secondary mt--3">siden midnat</div>
+            <!-- <div class="px-2 fs-7 fw-lighter text-secondary mt-0" id="valRainForecastToday"></div> -->
           </div>
-          <div class="position-absolute bottom-0 start-0 pb-2 ps-3 fs-7 fw-lighter">
-            <div class="pb-0 text-secondary">Intensitet</div>
-            <div class="fg-blue" id="valRainRate"></div>
+          <div class="d-flex flex-row justify-content-between pt-3">
+            <div class="ps-2 fs-7 fw-lighter">
+              <div class="pb-0 text-secondary">Intensitet</div>
+              <div class="fg-blue" id="valRainRate"></div>
+            </div>
           </div>
+        </div>
+        <div class="card-footer bg-body p-1 fs-7">
+          <div class="ps-2">Dagsoversigt</div>
         </div>
       </div>
     </div>
+
     <div class="col mb-4">
       <div class="card">
         <div class="d-flex justify-content-between">
-          <div class="p-2"><span class="material-icons circle-font bg-orange">wb_twilight</span></div>
-          <div class="px-2 mt-2 fs-6 text-secondary text-uppercase" id="valSunHeader"></div>
+          <div class="p-2"><span class="material-icons circle-font bg-blue">wb_twilight</span></div>
+          <div class="p-2 fs-6 text-secondary text-uppercase" id="valSunHeader"></div>
         </div>
-        <div class="card-body">
-          <div class="d-flex flex-column align-items-center m-0 p-0">
-            <div class="fs-0 fw-lighter" id="valSunTime"></div>
+        <div class="card-body p-1">
+          <div class="d-flex flex-column align-items-center">
+            <div class="fs-0 text-secondary fw-lighter" id="valSunTime"></div>
             <div class="fs-7 mt--3" id="valSunIcon"></div>
+            <div class="d-flex flex-row align-self-start pt-3">
+              <div class="ps-2 fs-7 fw-lighter">
+                <div class="pb-0 text-secondary" id="valSunNextChange"></div>
+              </div>
+            </div>
           </div>
-          <div class="position-absolute bottom-0 start-0 pb-2 ps-2 fs-7 fw-lighter">
-            <div class="pb-0 text-secondary" id="valSunNextChange"></div>
-          </div>
+        </div>
+        <div class="card-footer bg-body p-1 fs-7">
+          <div class="ps-2">Dagsoversigt</div>
         </div>
       </div>
     </div>
+
+
     <div class="col mb-4">
       <div class="card">
         <div class="d-flex justify-content-between">
           <div class="p-2"><span class="material-icons circle-font bg-orange">wb_sunny</span></div>
           <div class="px-2 mt-2 fs-6 text-secondary text-uppercase">UV Index</div>
         </div>
-        <div class="card-body">
-          <div class="d-flex flex-column align-items-start m-0 p-0">
-            <div class="lh-1 fs-0 text-secondary fw-lighter" id="valUvIndex"></div>
-            <div class="lh-1 fs-6 text-secondary" id="valUvDescription"></div>
-            <div class="lh-1 bar-container">
+        <div class="card-body p-1">
+          <div class="d-flex flex-column">
+            <div class="mb-auto px-2 pt-2 fs-0 lh-1 fs-0 text-secondary fw-lighter" id="valUvIndex"></div>
+            <div class="px-2 lh-1 fs-6 text-secondary" id="valUvDescription"></div>
+            <div class="px-2 lh-1 bar-container">
               <div class="uvvalue" id="valUvDot"></div>
               <div class="uvbar"></div>
             </div>
           </div>
-          <div class="position-absolute bottom-0 start-0 pb-2 ps-3 fs-7 fw-lighter">
-            <div class="pb-0 text-secondary">Solstråling</div>
-            <div class="fg-blue" id="valSolarRad"></div>
+          <div class="d-flex flex-row justify-content-between pt-3">
+            <div class="ps-2 fs-7 fw-lighter">
+              <div class="pb-0 text-secondary">Solstråling</div>
+              <div class="fg-blue" id="valSolarRad"></div>
+            </div>
           </div>
+        </div>
+        <div class="card-footer bg-body p-1 fs-7">
+          <div class="ps-2">Dagsoversigt</div>
         </div>
       </div>
     </div>
+
+    <div class="col mb-4">
+      <div class="card">
+        <div class="d-flex justify-content-between">
+          <div class="p-2"><span class="material-icons circle-font bg-blue">dew_point</span></div>
+          <div class="p-2 fs-6 text-secondary text-uppercase">Luftfugtighed</div>
+        </div>
+        <div class="card-body p-1">
+          <div class="d-flex flex-column">
+            <div class="mb-auto px-2 pt-2 fs-0 text-secondary fw-lighter align-self-center" id="valHumidity"></div>
+            <div class="d-flex flex-row align-self-start pt-5">
+              <div class="ps-2 fs-7 fw-lighter">
+                <div class="pb-0 text-secondary" id="valDewPointText"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer bg-body p-1 fs-7">
+          <div class="ps-2">Dagsoversigt</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col mb-4">
+      <div class="card">
+        <div class="d-flex justify-content-between">
+          <div class="p-2"><span class="material-icons circle-font bg-red">speed</span></div>
+          <div class="p-2 fs-6 text-secondary text-uppercase">Lufttryk</div>
+        </div>
+        <div class="card-body p-1">
+          <div class="d-flex flex-column justify-content-start">
+            <canvas class="align-self-center mb-auto mt--3" id="valPressureGauge"></canvas>
+            <div class="d-flex flex-row justify-content-between mt--2">
+              <div class="ps-2 fs-7 fw-lighter">
+                <div class="pb-0 text-secondary">Trend</div>
+                <div class="fg-blue" id="valPressureTrend"></div>
+              </div>
+              <div class="pe-2 fs-7 fw-lighter">
+                <div class="pb-0 text-secondary">Lufttryk</div>
+                <div class="text-end fg-blue" id="valPressure"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer bg-body p-1 fs-7">
+          <div class="ps-2">Dagsoversigt</div>
+        </div>
+      </div>
+    </div>
+
     <div class="col mb-4">
       <div class="card">
         <div class="d-flex justify-content-between">
           <div class="p-2"><span class="material-icons circle-font bg-green">grain</span></div>
           <div class="px-2 mt-2 fs-6 text-secondary text-uppercase">Luftkvalitet</div>
         </div>
-        <div class="card-body">
-          <div class="d-flex flex-column align-items-start m-0 p-0">
-            <div class="lh-1 fs-0 fw-lighter" id="valAqi"></div>
-            <div class="lh-1 fs-6 text-secondary" id="valAqiDescription"></div>
-            <div class="lh-1 bar-container">
+        <div class="card-body p-1">
+          <div class="d-flex flex-column">
+            <div class="mb-auto px-2 pt-2 fs-0 lh-1 fs-0 text-secondary fw-lighter" id="valAqi"></div>
+            <div class="px-2 lh-1 fs-6 text-secondary" id="valAqiDescription"></div>
+            <div class="px-2 lh-1 bar-container">
               <div class="aqivalue" id="valAqiDot"></div>
               <div class="aqibar"></div>
             </div>
           </div>
-          <div class="position-absolute bottom-0 start-0 pb-2 ps-3 fs-7 fw-lighter">
+          <div class="d-flex flex-row justify-content-between pt-3">
+            <div class="ps-2 fs-7 fw-lighter">
+            </div>
           </div>
+        </div>
+        <div class="card-footer bg-body p-1 fs-7">
+          <div class="ps-2">Dagsoversigt</div>
         </div>
       </div>
     </div>
+
+    <div class="col mb-4">
+      <div class="card">
+        <div class="d-flex justify-content-between">
+          <div class="p-2"><span class="material-icons circle-font bg-blue">visibility</span></div>
+          <div class="p-2 fs-6 text-secondary text-uppercase">Sigtbarhed</div>
+        </div>
+        <div class="card-body p-1">
+          <div class="d-flex flex-column">
+            <div class="mb-auto px-2 pt-2 fs-0 text-secondary fw-lighter align-self-center" id="valVisibility"></div>
+            <div class="d-flex flex-row align-self-start pt-5">
+              <div class="ps-2 fs-7 fw-lighter">
+                <div class="pb-0 text-secondary" id="valVisibilityText"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer bg-body p-1 fs-7">
+          <div class="ps-2">Dagsoversigt</div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>
 
