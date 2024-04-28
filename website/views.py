@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from flask import Blueprint, current_app, render_template, jsonify
+from flask import Blueprint, current_app, render_template, jsonify, url_for
 from dataclasses import asdict as as_dict
 from pymeteobridgesql import MeteobridgeSQL, RealtimeData, ForecastDaily, ForecastHourly
 

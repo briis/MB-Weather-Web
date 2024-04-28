@@ -15,7 +15,40 @@ let windirGauge;
 let pressureGauge;
 
 // *************************************
-// MAIN FUNCTIONS
+// CAROUSEL FUNCTIONS
+// *************************************
+
+function setupForecastControls() {
+    let carouselWidth = $(".carousel-inner")[0].scrollWidth;
+    let cardWidth = $(".carousel-item").width();
+    let scrollPosition = 0;
+    let multipleCardCarousel = document.querySelector("#weatherCarousel");
+
+    let carousel = new bootstrap.Carousel(multipleCardCarousel, {
+        interval: false,
+        wrap: false,
+    });
+
+    $(".carousel-control-next").on("click", function () {
+        if (scrollPosition < (carouselWidth - cardWidth * 4)) { //check if you can go any further
+            scrollPosition += cardWidth;  //update scroll position
+            $(".carousel-inner").animate({ scrollLeft: scrollPosition }, 600); //scroll left
+        }
+    });
+
+    $(".carousel-control-prev").on("click", function () {
+        if (scrollPosition > 0) {
+            scrollPosition -= cardWidth;
+            $(".carousel-inner").animate(
+                { scrollLeft: scrollPosition },
+                600
+            );
+        }
+    });
+}
+
+// *************************************
+// STARTUP FUNCTIONS
 // *************************************
 $('document').ready(function () {
     windirGauge = createWindDirGauge();
@@ -111,22 +144,57 @@ function getDailyForecastData() {
             // ** Sun Time Widget **
             if (moment().isBefore(moment(moment.unix(data[0].sunriseepoch)))) {
                 document.getElementById("valSunHeader").innerHTML = 'Solopgang';
-                document.getElementById('valSunIcon').innerHTML = `<img src="/static/images/weather/sunrise-light.svg" height="60px" width="60px">`;
+                document.getElementById('valSunIcon').innerHTML = `<img src="/static/images/weather/sunrise.svg" height="60px" width="60px">`;
                 document.getElementById("valSunTime").innerHTML = moment.unix(data[0].sunriseepoch).format('HH:mm');
                 document.getElementById('valSunNextChange').innerHTML = `Sol ned: ${moment(moment.unix(data[0].sunsetepoch)).format('HH:mm')}`;
             } else if (moment().isAfter(moment(moment.unix(data[0].sunriseepoch))) && moment().isBefore(moment(moment.unix(data[0].sunsetepoch)))) {
                 document.getElementById("valSunHeader").innerHTML = 'Solnedgang';
-                document.getElementById('valSunIcon').innerHTML = `<img src="/static/images/weather/sunset-light.svg" height="60px" width="60px">`;
+                document.getElementById('valSunIcon').innerHTML = `<img src="/static/images/weather/sunset.svg" height="60px" width="60px">`;
                 document.getElementById("valSunTime").innerHTML = moment.unix(data[0].sunsetepoch).format('HH:mm');
                 document.getElementById('valSunNextChange').innerHTML = `Sol op: ${moment(moment.unix(data[1].sunriseepoch)).format('HH:mm')} i morgen`;
             } else {
                 let prefix = '';
                 if (moment().hour() <= 23) { prefix = 'i morgen'; }
                 document.getElementById("valSunHeader").innerHTML = 'Solopgang';
-                document.getElementById('valSunIcon').innerHTML = `<img src="/static/images/weather/sunrise-light.svg" height="60px" width="60px">`;
+                document.getElementById('valSunIcon').innerHTML = `<img src="/static/images/weather/sunrise.svg" height="60px" width="60px">`;
                 document.getElementById("valSunTime").innerHTML = moment.unix(data[1].sunriseepoch).format('HH:mm');
                 document.getElementById('valSunNextChange').innerHTML = `Sol ned: ${moment(moment.unix(data[1].sunsetepoch)).format('HH:mm')} ${prefix}`;
             }
+
+            // Build the Daily Forecast
+            html_data = ``;
+            data.forEach(element => {
+                if (element.day_num == '1') {
+                    html_data += `<div class="carousel-item active">`;
+                } else {
+                    html_data += `<div class="carousel-item">`;
+                }
+                html_data += `<div class="card slider">`;
+                html_data += `<div class="img-wrapper">`;
+                html_data += `<img src="/static/images/weather/${element.icon}.svg" class="d-block w-100" alt="...">`;
+                html_data += `</div>`;
+                html_data += `<div class="card-body p-1">`;
+                html_data += `<div class="row">`;
+                html_data += `<div class="col d-flex justify-content-center fs-6">`;
+                html_data += `<div class="fw-bold">${moment(element.datetime).format("D. MMM")}</div>`;
+                html_data += `</div>`;
+                html_data += `</div>`;
+                html_data += `<div class="row">`;
+                html_data += `<div class="col d-flex justify-content-center fs-7">`;
+                html_data += `<div><span class="fg-red">${element.temperature.toFixed(0)}</span>&deg; | <span class="fg-blue">${element.temp_low.toFixed(0)}</span>&deg;</div>`;
+                html_data += `</div>`;
+                html_data += `</div>`;
+                html_data += `<div class="row">`;
+                html_data += `<div class="col d-flex justify-content-center fs-7">`;
+                html_data += `<div>${element.precipitation.toFixed(1)} mm</div>`;
+                html_data += `</div>`;
+                html_data += `</div>`;
+                html_data += `</div>`;
+                html_data += `</div>`;
+                html_data += `</div>`;
+            });
+            document.getElementById("foreDailyItems").innerHTML = html_data;
+            setupForecastControls();
         },
         error: function (error) {
             console.log('Daily Forecast Data load error: ' + error);
@@ -134,6 +202,31 @@ function getDailyForecastData() {
     });
 }
 
+{/* <div class="carousel-item active">
+<div class="card slider">
+  <div class="img-wrapper">
+    <img src="{{ url_for('static', filename='images/weather/clear-day-light.svg') }}"
+      class="d-block w-100" alt="...">
+  </div>
+  <div class="card-body p-1">
+    <div class="row">
+      <div class="col d-flex justify-content-center fs-6">
+        <div class="fw-bold">29. apr</div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col d-flex justify-content-center fs-7">
+        <div>17.6 | 9.2</div>
+      </div>
+      <div class="row">
+        <div class="col d-flex justify-content-center fs-7">
+          <div>10 mm</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div> */}
 
 // *************************************
 // HOURLYD FORECAST FUNCTIONS
@@ -148,7 +241,7 @@ function getHourlyForecastData() {
         },
         dataType: 'json',
         success: function (data) {
-            console.log(data);
+            // console.log(data);
         },
         error: function (error) {
             console.log('Hourly Forecast Data load error: ' + error);
