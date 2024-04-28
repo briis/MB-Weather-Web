@@ -81,7 +81,7 @@
 }
 
 .card-body {
-    min-height: 160px;
+    height: 160px;
 }
 
 .circle-font {
@@ -133,7 +133,7 @@
 }
 
 .mt--2 {
-    margin-top: -0.8rem;
+    margin-top: -0.7rem;
 }
 
 .mt--3 {
