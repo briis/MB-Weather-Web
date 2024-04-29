@@ -2,38 +2,28 @@
 %}
 
 <div class="container">
-  <div class="row row-cols-1 mt-2">
+
+  <div class="row mt-2">
     <div class="col mb-4">
       <div class="card">
         <div class="d-flex justify-content-between p-0">
-          <div class="ps-2 pt-2"><span class="material-icons circle-font bg-blue">device_thermostat</span></div>
+          <div class="ps-2 pt-2"><span class="material-icons circle-font bg-purple">online_prediction</span></div>
           <div class="pe-2 pt-2 fs-6 text-secondary text-uppercase">Vejrudsigt</div>
         </div>
 
         <div class="card-body p-1">
-          <div class="carousel" id="weatherCarousel">
-            <div class="carousel-inner pt-0 pb-1" id="foreDailyItems">
-            </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#weatherCarousel" data-bs-slide="prev">
-              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-              <span class="visually-hidden">Forrige</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#weatherCarousel" data-bs-slide="next">
-              <span class="carousel-control-next-icon" aria-hidden="true"></span>
-              <span class="visually-hidden">Næste</span>
-            </button>
+          <div class="owl-carousel owl-theme pt-0 pb-1" id="elemForecastSlider"></div>
+
+          <div class="card-footer bg-body p-1 fs-7">
+            <div class="ps-2">Detaljeret vejrudsigt</div>
           </div>
 
         </div>
-        <div class="card-footer bg-body p-1 fs-7">
-          <div class="ps-2">Detaljeret vejrudsigt</div>
-        </div>
-
       </div>
     </div>
   </div>
 
-  <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 mt-2">
+  <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5">
     <div class="col mb-4">
       <div class="card">
         <div class="d-flex justify-content-between">
@@ -44,14 +34,15 @@
           <div class="d-flex flex-column">
             <div class="mb-auto px-2 pt-2 fs-0 text-secondary fw-lighter align-self-center" id="valTemperature"></div>
             <div class="d-flex flex-row justify-content-between pt-4">
-              <div class="ps-2 fs-7 fw-lighter">
+              <div class="ps-2 fs-7 fw-light">
                 <div class="pb-0">Føles som</div>
                 <div class="fg-blue" id="valFeelsLike"></div>
               </div>
-              <div class="pe-2 fs-7 fw-lighter">
-                <div class="pb-0">Høj | Lav i dag</div>
+              <div class="pe-2 fs-7 fw-light text-end">
+                <div class=" pb-0">Høj | Lav</div>
                 <div class="text-end"><span class="fg-red" id="valTempMax"></span> | <span class="fg-blue"
-                    id="valTempMin"></span></div>
+                    id="valTempMin"></span>
+                </div>
               </div>
             </div>
           </div>
@@ -72,11 +63,11 @@
           <div class="d-flex flex-column justify-content-start">
             <canvas class="align-self-center mb-auto mt--3" id="valWindbearing"></canvas>
             <div class="d-flex flex-row justify-content-between mt--2">
-              <div class="ps-2 fs-7 fw-lighter">
+              <div class="ps-2 fs-7 fw-light">
                 <div class="pb-0">Vind fra</div>
                 <div class="fg-blue" id="valWinddir"></div>
               </div>
-              <div class="pe-2 fs-7 fw-lighter">
+              <div class="pe-2 fs-7 fw-light text-end">
                 <div class="pb-0">Vindstød</div>
                 <div class="text-end fg-blue" id="valWindgust"></div>
               </div>
@@ -98,11 +89,10 @@
         <div class="card-body widget p-1">
           <div class="d-flex flex-column">
             <div class="mb-auto px-2 pt-2 text-secondary fs-0 fw-lighter" id="valRainToday"></div>
-            <div class="px-3 fs-7 fw-lighter mt--3">siden midnat</div>
-            <!-- <div class="px-2 fs-7 fw-lighter mt-0" id="valRainForecastToday"></div> -->
+            <div class="px-3 fs-7 fw-light mt--3">siden midnat</div>
           </div>
           <div class="d-flex flex-row justify-content-between pt-3">
-            <div class="ps-2 fs-7 fw-lighter">
+            <div class="ps-2 fs-7 fw-light">
               <div class="pb-0">Intensitet</div>
               <div class="fg-blue" id="valRainRate"></div>
             </div>
@@ -117,7 +107,7 @@
     <div class="col mb-4">
       <div class="card">
         <div class="d-flex justify-content-between">
-          <div class="p-2"><span class="material-icons circle-font bg-blue">wb_twilight</span></div>
+          <div class="p-2"><span class="material-icons circle-font bg-orange">wb_twilight</span></div>
           <div class="p-2 fs-6 text-uppercase" id="valSunHeader"></div>
         </div>
         <div class="card-body widget p-1">
@@ -125,7 +115,7 @@
             <div class="fs-0 text-secondary fw-lighter" id="valSunTime"></div>
             <div class="fs-7 mt--3" id="valSunIcon"></div>
             <div class="d-flex flex-row align-self-start pt-3">
-              <div class="ps-2 fs-7 fw-lighter">
+              <div class="ps-2 fs-7 fw-light">
                 <div class="pb-0" id="valSunNextChange"></div>
               </div>
             </div>
@@ -154,7 +144,7 @@
             </div>
           </div>
           <div class="d-flex flex-row justify-content-between pt-3">
-            <div class="ps-2 fs-7 fw-lighter">
+            <div class="ps-2 fs-7 fw-light">
               <div class="pb-0">Solstråling</div>
               <div class="fg-blue" id="valSolarRad"></div>
             </div>
@@ -176,7 +166,7 @@
           <div class="d-flex flex-column">
             <div class="mb-auto px-2 pt-2 fs-0 text-secondary fw-lighter align-self-center" id="valHumidity"></div>
             <div class="d-flex flex-row align-self-start pt-5">
-              <div class="ps-2 fs-7 fw-lighter">
+              <div class="ps-2 fs-7 fw-light">
                 <div class="pb-0" id="valDewPointText"></div>
               </div>
             </div>
@@ -198,11 +188,11 @@
           <div class="d-flex flex-column justify-content-start">
             <canvas class="align-self-center mb-auto mt--3" id="valPressureGauge"></canvas>
             <div class="d-flex flex-row justify-content-between mt--2">
-              <div class="ps-2 fs-7 fw-lighter">
+              <div class="ps-2 fs-7 fw-light">
                 <div class="pb-0">Trend</div>
                 <div class="fg-blue" id="valPressureTrend"></div>
               </div>
-              <div class="pe-2 fs-7 fw-lighter">
+              <div class="pe-2 fs-7 fw-light text-end">
                 <div class="pb-0">Lufttryk</div>
                 <div class="text-end fg-blue" id="valPressure"></div>
               </div>
@@ -231,7 +221,7 @@
             </div>
           </div>
           <div class="d-flex flex-row justify-content-between pt-3">
-            <div class="ps-2 fs-7 fw-lighter">
+            <div class="ps-2 fs-7 fw-light">
             </div>
           </div>
         </div>
@@ -244,14 +234,14 @@
     <div class="col mb-4">
       <div class="card">
         <div class="d-flex justify-content-between">
-          <div class="p-2"><span class="material-icons circle-font bg-blue">visibility</span></div>
+          <div class="p-2"><span class="material-icons circle-font bg-green">visibility</span></div>
           <div class="p-2 fs-6 text-secondary text-uppercase">Sigtbarhed</div>
         </div>
         <div class="card-body widget p-1">
           <div class="d-flex flex-column">
             <div class="mb-auto px-2 pt-2 fs-0 text-secondary fw-lighter align-self-center" id="valVisibility"></div>
             <div class="d-flex flex-row align-self-start pt-5">
-              <div class="ps-2 fs-7 fw-lighter">
+              <div class="ps-2 fs-7 fw-light">
                 <div class="pb-0" id="valVisibilityText"></div>
               </div>
             </div>

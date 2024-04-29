@@ -13,59 +13,31 @@ const uviMax = 12;
 
 let windirGauge;
 let pressureGauge;
+let owl;
 
-// *************************************
-// CAROUSEL FUNCTIONS
-// *************************************
-
-function setupForecastControls() {
-    let carouselWidth = $(".carousel-inner")[0].scrollWidth;
-    let cardWidth = $(".carousel-item").width();
-    let scrollPosition = 0;
-    let multipleCardCarousel = document.querySelector("#weatherCarousel");
-
-    let carousel = new bootstrap.Carousel(multipleCardCarousel, {
-        interval: false,
-        wrap: false,
-    });
-
-    $(".carousel-control-next").on("click", function () {
-        if (scrollPosition < (carouselWidth - cardWidth * 4)) { //check if you can go any further
-            scrollPosition += cardWidth;  //update scroll position
-            $(".carousel-inner").animate({ scrollLeft: scrollPosition }, 600); //scroll left
-        }
-    });
-
-    $(".carousel-control-prev").on("click", function () {
-        if (scrollPosition > 0) {
-            scrollPosition -= cardWidth;
-            $(".carousel-inner").animate(
-                { scrollLeft: scrollPosition },
-                600
-            );
-        }
-    });
-}
 
 // *************************************
 // STARTUP FUNCTIONS
 // *************************************
 $('document').ready(function () {
+    moment.locale('da');
     windirGauge = createWindDirGauge();
     pressureGauge = createPressureGauge();
     getWeatherData();
     getDailyForecastData();
     getHourlyForecastData();
+
+
+    setInterval(function () {
+        getWeatherData();
+    }, 30000);
+
+    setInterval(function () {
+        getDailyForecastData();
+        getHourlyForecastData();
+    }, 150000);
+
 });
-
-setTimeout(function () {
-    getWeatherData();
-}, 30000);
-
-setTimeout(function () {
-    getDailyForecastData();
-    getHourlyForecastData();
-}, 300000);
 
 // *************************************
 // REALTIME DATA FUNCTIONS
@@ -140,7 +112,6 @@ function getDailyForecastData() {
         },
         dataType: 'json',
         success: function (data) {
-            console.log(data);
             // ** Sun Time Widget **
             if (moment().isBefore(moment(moment.unix(data[0].sunriseepoch)))) {
                 document.getElementById("valSunHeader").innerHTML = 'Solopgang';
@@ -161,14 +132,10 @@ function getDailyForecastData() {
                 document.getElementById('valSunNextChange').innerHTML = `Sol ned: ${moment(moment.unix(data[1].sunsetepoch)).format('HH:mm')} ${prefix}`;
             }
 
-            // Build the Daily Forecast
+            if (owl) { $(".owl-carousel").owlCarousel('destroy'); }
+            document.getElementById("elemForecastSlider").innerHTML = '';
             html_data = ``;
             data.forEach(element => {
-                if (element.day_num == '1') {
-                    html_data += `<div class="carousel-item active">`;
-                } else {
-                    html_data += `<div class="carousel-item">`;
-                }
                 html_data += `<div class="card slider">`;
                 html_data += `<div class="img-wrapper">`;
                 html_data += `<img src="/static/images/weather/${element.icon}.svg" class="d-block w-100" alt="...">`;
@@ -191,10 +158,30 @@ function getDailyForecastData() {
                 html_data += `</div>`;
                 html_data += `</div>`;
                 html_data += `</div>`;
-                html_data += `</div>`;
             });
-            document.getElementById("foreDailyItems").innerHTML = html_data;
-            setupForecastControls();
+
+            document.getElementById("elemForecastSlider").innerHTML = html_data;
+            owl = $(".owl-carousel");
+            owl.owlCarousel({
+                loop: false,
+                margin: 10,
+                nav: false,
+                dots: false,
+                responsiveClass: true,
+                responsive: {
+                    0: {
+                        items: 3,
+                    },
+                    600: {
+                        items: 5,
+                    },
+                    1000: {
+                        items: 7,
+                        nav: true,
+                    }
+                }
+            });
+
         },
         error: function (error) {
             console.log('Daily Forecast Data load error: ' + error);
@@ -202,31 +189,6 @@ function getDailyForecastData() {
     });
 }
 
-{/* <div class="carousel-item active">
-<div class="card slider">
-  <div class="img-wrapper">
-    <img src="{{ url_for('static', filename='images/weather/clear-day-light.svg') }}"
-      class="d-block w-100" alt="...">
-  </div>
-  <div class="card-body p-1">
-    <div class="row">
-      <div class="col d-flex justify-content-center fs-6">
-        <div class="fw-bold">29. apr</div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col d-flex justify-content-center fs-7">
-        <div>17.6 | 9.2</div>
-      </div>
-      <div class="row">
-        <div class="col d-flex justify-content-center fs-7">
-          <div>10 mm</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-</div> */}
 
 // *************************************
 // HOURLYD FORECAST FUNCTIONS
@@ -253,7 +215,7 @@ function getHourlyForecastData() {
 // GAUGES
 // *************************************
 function createWindDirGauge() {
-    var gauge = new RadialGauge({
+    let gauge = new RadialGauge({
         renderTo: 'valWindbearing',
         useMinPath: true,
         width: 130,
@@ -313,7 +275,7 @@ function createWindDirGauge() {
 }
 
 function createPressureGauge() {
-    var gauge = new RadialGauge({
+    let gauge = new RadialGauge({
         renderTo: 'valPressureGauge',
         useMinPath: true,
         width: 130,
@@ -368,6 +330,7 @@ function createPressureGauge() {
     }).draw();
     return gauge;
 }
+
 
 // *************************************
 // HELPER FUNCTIONS
