@@ -151,11 +151,19 @@ function getDailyForecastData() {
                 html_data += `<div><span class="fg-red">${element.temperature.toFixed(0)}</span>&deg; | <span class="fg-blue">${element.temp_low.toFixed(0)}</span>&deg;</div>`;
                 html_data += `</div>`;
                 html_data += `</div>`;
+
                 html_data += `<div class="row">`;
                 html_data += `<div class="col d-flex justify-content-center fs-7">`;
-                html_data += `<div>${element.precipitation.toFixed(1)} mm</div>`;
+                html_data += `<div>${element.precipitation.toFixed(1)}<sup>mm</sup></div>`;
                 html_data += `</div>`;
                 html_data += `</div>`;
+
+                html_data += `<div class="row">`;
+                html_data += `<div class="col d-flex justify-content-center fs-7">`;
+                html_data += `<div><span class="wi wi-wind from-${windDegreeToSymbol(element.wind_bearing)}-deg fg-brown fs-6 fw-semibold"></span> ${element.wind_speed.toFixed(1)}<sup>m/s</sup></div>`;
+                html_data += `</div>`;
+                html_data += `</div>`;
+
                 html_data += `</div>`;
                 html_data += `</div>`;
             });
@@ -410,6 +418,12 @@ function uvindexToText(uvi) {
 // Convert Wind Bearing degrees to Wind Cardinal
 function windDegreeToCardinal(bearing) {
     directions = ["N", "NNØ", "NØ", "ØNØ", "Ø", "ØSØ", "SØ", "SSØ", "S", "SSV", "SV", "VSV", "V", "VNV", "NV", "NNV", "N"];
+    return directions[Math.round((bearing + 11.25) / 22.5)];
+}
+
+// Convert Wind Bearing degrees to Wind Font Symbol
+function windDegreeToSymbol(bearing) {
+    directions = ["0", "23", "45", "68", "90", "113", "135", "158", "180", "203", "225", "248", "270", "293", "313", "336", "0"];
     return directions[Math.round((bearing + 11.25) / 22.5)];
 }
 
