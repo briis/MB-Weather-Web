@@ -15,6 +15,11 @@ let windirGauge;
 let pressureGauge;
 let owl;
 
+let forecastDailyData = [];
+let forecastHourlyData = [];
+let liveData = [];
+let minuteData = [];
+let monthData = [];
 
 // *************************************
 // STARTUP FUNCTIONS
@@ -26,17 +31,39 @@ $('document').ready(function () {
     getWeatherData();
     getDailyForecastData();
     getHourlyForecastData();
+    loadChartData();
 
-
+    // Update data every 30 seconds
     setInterval(function () {
         getWeatherData();
     }, 30000);
-
+    // Update daily forecast every 15 minutes
     setInterval(function () {
         getDailyForecastData();
         getHourlyForecastData();
-    }, 150000);
+    }, 900000);
+    // Update Chart data every 10 minutes
+    setInterval(function () {
+        loadChartData();
+    }, 600000);
 
+    // Add Modal Eventlisteners
+    const modalDefinition = document.getElementById("modalDefinition");
+    if (modalDefinition) {
+        modalDefinition.addEventListener('show.bs.modal', function (event) {
+            const triggerLink = event.relatedTarget;
+            const caller = triggerLink.getAttribute('data-bs-caller');
+            displayModal(caller);
+        });
+        modalDefinition.addEventListener('hidden.bs.modal', function () {
+            const modalTitle = document.querySelector('.modal-title');
+            const modalIcon = document.querySelector('.modal-icon');
+            const modalBody = document.querySelector('.modal-body');
+            modalTitle.innerHTML = 'Funktion ikke udviklet';
+            modalBody.innerHTML = 'Denne funktion er under udvikling. Kom tilbage senere.';
+            modalIcon.innerHTML = `<span class="material-icons circle-font bg-grey">info</span>`;
+        });
+    }
 });
 
 // *************************************
@@ -52,6 +79,7 @@ function getWeatherData() {
         },
         dataType: 'json',
         success: function (data) {
+            liveData = data;
             // ** Temperature Widget **
             document.getElementById("valTemperature").innerHTML = data.temperature + degrees;
             document.getElementById("valFeelsLike").innerHTML = data.feels_like_temperature + degrees;
@@ -70,7 +98,7 @@ function getWeatherData() {
             // document.getElementById("valRainForecastToday").innerHTML = '';
             document.getElementById("valRainRate").innerHTML = data.rainrate.toFixed(1) + rainRateUnit;
             // ** UV Index Widget **
-            document.getElementById("valUvIndex").innerHTML = data.uv.toFixed(0);
+            document.getElementById("valUvIndex").innerHTML = data.uv.toFixed(1);
             document.getElementById("valUvDescription").innerHTML = uvindexToText(data.uv);
             document.getElementById('valUvDot').style.left = `${uviDotPosition(data.uv)}%`;
             document.getElementById("valSolarRad").innerHTML = data.solarrad + SolarRadUnit;
@@ -112,6 +140,7 @@ function getDailyForecastData() {
         },
         dataType: 'json',
         success: function (data) {
+            forecastDailyData = data;
             // ** Sun Time Widget **
             if (moment().isBefore(moment(moment.unix(data[0].sunriseepoch)))) {
                 document.getElementById("valSunHeader").innerHTML = 'Solopgang';
@@ -143,7 +172,7 @@ function getDailyForecastData() {
                 html_data += `<div class="card-body p-1">`;
                 html_data += `<div class="row">`;
                 html_data += `<div class="col d-flex justify-content-center fs-6">`;
-                html_data += `<div class="fw-bold">${moment(element.datetime).format("D. MMM")}</div>`;
+                html_data += `<div class="fw-bold">${moment.utc(element.datetime).format("D. MMM")}</div>`;
                 html_data += `</div>`;
                 html_data += `</div>`;
                 html_data += `<div class="row">`;
@@ -154,13 +183,14 @@ function getDailyForecastData() {
 
                 html_data += `<div class="row">`;
                 html_data += `<div class="col d-flex justify-content-center fs-7">`;
-                html_data += `<div>${element.precipitation.toFixed(1)}<sup>mm</sup></div>`;
+                html_data += `<div><span class="material-icons fg-blue fs-7">water_drop</span> <span>${element.precipitation.toFixed(1)}<sup>mm</sup></span></div>`;
                 html_data += `</div>`;
                 html_data += `</div>`;
 
                 html_data += `<div class="row">`;
                 html_data += `<div class="col d-flex justify-content-center fs-7">`;
-                html_data += `<div><span class="wi wi-wind from-${windDegreeToSymbol(element.wind_bearing)}-deg fg-brown fs-6 fw-semibold"></span> ${element.wind_speed.toFixed(1)}<sup>m/s</sup></div>`;
+                html_data += `<div><span class="wi wi-direction-${windDegreeToWindSymbol(element.wind_bearing)} fs-6 fw-bold"></span> ${element.wind_speed.toFixed(1)}<sup>m/s</sup></div>`;
+                // html_data += `<div><span class="wi wi-wind from-${windDegreeToSymbol(element.wind_bearing)}-deg fs-6 fw-semibold"></span> ${element.wind_speed.toFixed(1)}<sup>m/s</sup></div>`;
                 html_data += `</div>`;
                 html_data += `</div>`;
 
@@ -211,12 +241,66 @@ function getHourlyForecastData() {
         },
         dataType: 'json',
         success: function (data) {
-            // console.log(data);
+            forecastHourlyData = data;
         },
         error: function (error) {
             console.log('Hourly Forecast Data load error: ' + error);
         }
     });
+}
+
+
+// *************************************
+// CHART DATA FUNCTIONS
+// *************************************
+function loadChartData() {
+    $.ajax({
+        url: "/api/minute_data",
+        type: "GET",
+        async: true,
+        data: {
+            format: 'json'
+        },
+        dataType: 'json',
+        success: function (data) {
+            minuteData = data;
+        },
+        error: function (error) {
+            console.log('Minute Chart Data load error: ' + error);
+        }
+    });
+    $.ajax({
+        url: "/api/monthly_data",
+        type: "GET",
+        async: true,
+        data: {
+            format: 'json'
+        },
+        dataType: 'json',
+        success: function (data) {
+            monthData = data;
+        },
+        error: function (error) {
+            console.log('Minute Chart Data load error: ' + error);
+        }
+    });
+
+}
+
+// *************************************
+// MODAL FUNCTIONS
+// *************************************
+
+function displayModal(caller) {
+    const modalTitle = document.querySelector('.modal-title');
+    const modalBody = document.querySelector('.modal-body');
+    if (caller == 'forecast') {
+        setupForecastModal(modalTitle, modalBody);
+    } else if (caller == 'temperature') {
+        setupTemperatureModal(modalTitle, modalBody);
+    } else if (caller == 'wind') {
+        setupWindModal(modalTitle, modalBody);
+    }
 }
 
 // *************************************
@@ -427,3 +511,19 @@ function windDegreeToSymbol(bearing) {
     return directions[Math.round((bearing + 11.25) / 22.5)];
 }
 
+
+// Convert Wind Bearing degrees to Wind Cardinal
+function windDegreeToWindSymbol(bearing) {
+    const directions = ["down", "down-left", "left", "up-left", "up", "up-right", "right", "down-right"];
+    const index = Math.floor((bearing + 22.5) / 45);
+    return directions[index % 8];
+}
+
+//check if the number is even
+function isEvenRow(number) {
+    if (number % 2 === 0) {
+        return "bg-grey-light text-secondary-emphasis";
+    } else {
+        return "text-secondary-emphasis";
+    }
+}

@@ -20,7 +20,6 @@
     <link rel="stylesheet" href="/static/css/owl.carousel.min.css" />
     <link rel="stylesheet" href="/static/css/owl.theme.default.min.css" />
     <link rel="stylesheet" href="/static/css/weather-icons.min.css" />
-    <link rel="stylesheet" href="/static/css/weather-icons-wind.min.css" />
     <link rel="stylesheet" href="/static/css/common.css" />
 
     <title>{% block title %}{{ title }}{% endblock %}</title>
@@ -69,6 +68,25 @@
 
     <div class="container">{% block content %} {% endblock %}</div>
 
+    <!-- Modal Definition -->
+    <div class="modal fade" id="modalDefinition" tabindex="-1" aria-labelledby="modalDefinitionLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-icon pe-2 fs-7" id="modalTitleIcon"><span
+                            class="material-icons circle-font bg-grey">info</span></div>
+                    <div class="modal-title fs-6 text-secondary text-uppercase" id="modalTitleLabel">Funktion ikke
+                        udviklet</div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Modal Body
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://code.jquery.com/jquery-3.6.3.min.js"
         integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
     <script>
@@ -86,8 +104,10 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <script src="/static/js/gauge.min.js"></script>
     <script src="/static/js/owl.carousel.min.js"></script>
+    <script src="/static/js/details.js"></script>
     <script src="/static/js/data.js"></script>
 
 </body>
