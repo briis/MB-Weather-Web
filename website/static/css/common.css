@@ -202,6 +202,10 @@ img {
     font-size: 0.7rem;
 }
 
+.fs-tiny {
+    font-size: 0.875rem;
+}
+
 .modal-lg {
     max-width: 60%;
     min-width: 345px;
@@ -214,4 +218,11 @@ img {
 
 .mt--3 {
     margin-top: -1rem;
+}
+
+@media only screen and (max-width: 600px) {
+
+    .fs-tiny {
+        font-size: 0.7rem;
+    }
 }

@@ -91,17 +91,17 @@ function setupForecastModal(modalTitle, modalBody) {
     forecastDailyData.every((data) => {
         html_d += `<div class="row ${isEvenRow(cnt)} align-items-center">`;
         html_d += `<div class="col-4 fs-7 fw-semibold">${moment.utc(data.datetime).format("D. MMM")}`;
-        html_d += `<div class="row">`;
-        html_d += `<div class="col-4 fs-8 text-nowrap">${data.conditions}</div>`;
+        html_d += `<div class="row fw-normal">`;
+        html_d += `<div class="col-4 fs-tiny text-nowrap">${data.conditions}</div>`;
         html_d += `</div>`;
 
         html_d += `</div>`;
         html_d += `<div class="col-2 img-wrapper forecast-img">`;
         html_d += `<img src="/static/images/weather/${data.icon}.svg" class="d-block w-100" alt="...">`;
         html_d += `</div>`;
-        html_d += `<div class="col-2 p-0 pe-2 fs-8 text-end"><span class="material-icons fg-blue fs-8">water_drop</span> ${data.precipitation.toFixed(0)}</div>`;
-        html_d += `<div class="col-2 p-0 pe-2 fs-8 text-end"><span class="material-icons fs-8">arrow_upward</span> ${data.temperature.toFixed(0)}&deg;</div>`;
-        html_d += `<div class="col-2 p-0 pe-2 fs-8 text-end"><span class="material-icons fs-8">arrow_downward</span> ${data.temp_low.toFixed(0)}&deg;</div>`;
+        html_d += `<div class="col-2 p-0 pe-2 fs-tiny text-end"><span class="material-icons fg-blue fs-8">water_drop</span> ${data.precipitation.toFixed(0)}</div>`;
+        html_d += `<div class="col-2 p-0 pe-2 fs-tiny text-end"><span class="material-icons fs-8">arrow_upward</span> ${data.temperature.toFixed(0)}&deg;</div>`;
+        html_d += `<div class="col-2 p-0 pe-2 fs-tiny text-end"><span class="material-icons fs-8">arrow_downward</span> ${data.temp_low.toFixed(0)}&deg;</div>`;
 
         html_d += `</div>`;
         cnt++;
