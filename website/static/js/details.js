@@ -123,9 +123,40 @@ function setupTemperatureModal(modalTitle, modalBody) {
     modalTitle.innerHTML = "Dagsoversigt - Temperatur";
 
     // Set modal body
-    html = `<div class="p-2 fs-6 fw-bold">Temperatur Grafer</div>`;
-
+    let description = `Temperaturen føles lige nu som ${liveData.feels_like_temperature}&deg; og den faktiske temperatur er ${liveData.temperature}&deg;`;
+    description += ` ${feelsLikeToText(liveData.feels_like_temperature)}. Temperaturen i dag vil blive mellem ${liveData.tempmin}&deg; og ${liveData.tempmax}&deg;.`;
+    const explainHdr = 'Om Føles som-temperaturen';
+    const explainText = `Føles som-temperaturen angiver hvor varmt eller koldt det føles, og kan afvige fra den faktiske temperatur. Luftfugtighed og vindforhold kan påvirke Føles som-temperaturen.`;
+    html = getChartModalLayout(
+        `${liveData.temperature}&deg;`,
+        `Føles som ${liveData.feels_like_temperature}&deg;`,
+        description,
+        explainHdr,
+        explainText
+    );
     modalBody.innerHTML = html;
+
+    // Build Chart
+    let chartData = [];
+    let chartData1 = [];
+    let chartData2 = [];
+    minuteData.forEach((data) => {
+        chartData1.push({
+            x: moment.utc(data['logdate']).format("X") * 1000,
+            y: data['temperature']
+        });
+        chartData2.push({
+            x: moment.utc(data['logdate']).format("X") * 1000,
+            y: data['dewpoint']
+        });
+    });
+    chartData.push({ name: "Temperatur", type: 'area', data: chartData1 });
+    chartData.push({ name: "Dugpunkt", type: 'line', data: chartData2 });
+
+    let options = chartWithTwoDataSets(chartData, '°');
+    let chart = new ApexCharts(document.getElementById("chartModal"), options);
+    chart.render();
+
 }
 
 // *************************************
@@ -139,4 +170,50 @@ function setupWindModal(modalTitle, modalBody) {
 
     // Set modal body
     modalBody.innerHTML = "<p>Her vil der komme flere detaljer om vindhastighed og retning inklusiv grafer ol..</p>";
+}
+
+
+// *************************************
+// CHART MODAL HTML TEMPLATE
+// *************************************
+function getChartModalLayout(topValue1, topValue2, description, explainHdr, explainText) {
+    return `
+        <div class="container p-2">
+            <div class="row">
+                <div class="col">
+                    <div class="py-1 fs-5 fw-bold">${topValue1}</div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="mt-n2 mb-2 fs-7 text-secondary">${topValue2}</div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div id="chartModal" width="400" height="200"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="fs-6 fw-semibold">Daglig oversigt</div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="fs-7 text-secondary">${description}</div>
+                 </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col">
+                     <div class="fs-6 fw-semibold">${explainHdr}</div>
+                 </div>
+            </div>
+            <div class="row">
+                 <div class="col">
+                     <div class="fs-7 text-secondary">${explainText}</div>
+                  </div>
+            </div>
+     </div>
+    `;
 }

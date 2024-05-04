@@ -527,3 +527,14 @@ function isEvenRow(number) {
         return "text-secondary-emphasis";
     }
 }
+
+// Translate Feels Like Temperature to Text
+function feelsLikeToText(temp) {
+    if (temp <= 10) {
+        return `Vind får det til at føles koldere`;
+    }
+    if (temp >= 26) {
+        return `Høj luftfugtighed får det til at føles varmere`;
+    }
+    return ``;
+}

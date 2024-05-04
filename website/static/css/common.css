@@ -161,8 +161,16 @@ img {
     color: var(--color-blue);
 }
 
+.fg-blue-light {
+    color: var(--color-blue-light);
+}
+
 .fg-brown {
     color: var(--color-brown);
+}
+
+.fg-disabled {
+    color: var(--gray-600);
 }
 
 .fg-green {
@@ -209,14 +217,13 @@ img {
 .modal-lg {
     max-width: 60%;
     min-width: 345px;
-    margin: auto;
 }
 
-.mt--2 {
+.mt-n2 {
     margin-top: -0.7rem;
 }
 
-.mt--3 {
+.mt-n3 {
     margin-top: -1rem;
 }
 
@@ -224,5 +231,9 @@ img {
 
     .fs-tiny {
         font-size: 0.7rem;
+    }
+
+    .modal-lg {
+        margin: auto;
     }
 }
