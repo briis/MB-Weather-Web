@@ -538,7 +538,7 @@ function setupVisibilityModal(modalTitle, modalBody) {
     modalBody.innerHTML = html;
 
     // Build Chart
-    let options = chartWithOneDataSet(chartData, ` KM`, cssVar("color-green"), 'solid');
+    let options = chartWithOneDataSet(chartData, ` Km`, cssVar("color-green"), 'solid');
     let chart = new ApexCharts(document.getElementById("chartModal"), options);
     chart.render();
 }
@@ -561,7 +561,7 @@ function getChartModalLayout(topValue1, topValue2, descriptionHdr, description, 
             </div>
             <div class="row">
                 <div class="col">
-                    <div id="chartModal" width="400" height="200"></div>
+                    <div class="p-1" id="chartModal" width="400" height="200"></div>
                 </div>
             </div>
             <div class="row">
