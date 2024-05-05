@@ -7,8 +7,13 @@ function chartWithOneDataSet(data, unit, chart1Color, fillType = "gradient") {
         chart: {
             height: 250,
             parentHeightOffset: 0,
+            offsetX: 0,
+            offsetY: 0,
             toolbar: {
                 show: false,
+            },
+            zoom: {
+                enabled: false,
             },
         },
         colors: [chart1Color],
@@ -45,6 +50,7 @@ function chartWithOneDataSet(data, unit, chart1Color, fillType = "gradient") {
         yaxis: {
             tickAmount: 2,
             labels: {
+                offsetX: -15,
                 style: {
                     colors: [cssVar("color-disabled")],
                     fontSize: 12,
@@ -52,6 +58,11 @@ function chartWithOneDataSet(data, unit, chart1Color, fillType = "gradient") {
                 formatter: function (value) {
                     return parseInt(value) + unit;
                 },
+            },
+        },
+        grid: {
+            padding: {
+                left: 5,
             },
         },
         series: data,
@@ -81,6 +92,9 @@ function chartWithTwoDataSets(data, unit, chart1Color, chart2Color, fillType = "
             parentHeightOffset: 0,
             toolbar: {
                 show: false,
+            },
+            zoom: {
+                enabled: false,
             },
         },
         colors: [chart1Color, chart2Color],
@@ -115,7 +129,9 @@ function chartWithTwoDataSets(data, unit, chart1Color, chart2Color, fillType = "
             },
         },
         yaxis: {
+            tickAmount: 2,
             labels: {
+                offsetX: -15,
                 style: {
                     colors: [cssVar("color-disabled")],
                     fontSize: 12,
@@ -123,6 +139,11 @@ function chartWithTwoDataSets(data, unit, chart1Color, chart2Color, fillType = "
                 formatter: function (value) {
                     return parseInt(value) + unit;
                 },
+            },
+        },
+        grid: {
+            padding: {
+                left: 5,
             },
         },
         series: data,

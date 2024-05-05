@@ -201,7 +201,7 @@ function setupWindModal(modalTitle, modalBody) {
     chartData.push({ name: "Hastighed", type: 'area', data: chartData1 });
     chartData.push({ name: "Stød", type: 'line', data: chartData2 });
 
-    let options = chartWithTwoDataSets(chartData, 'm/s', cssVar("color-green"), cssVar("color-orange"));
+    let options = chartWithTwoDataSets(chartData, ' m/s', cssVar("color-green"), cssVar("color-orange"));
     let chart = new ApexCharts(document.getElementById("chartModal"), options);
     chart.render();
 }
@@ -242,7 +242,7 @@ function setupRainModal(modalTitle, modalBody) {
     });
     chartData.push({ name: "Nedbør", type: 'bar', data: chartData1 });
     if (chartData1.length > 1) {
-        let options = chartWithOneDataSet(chartData, 'mm', cssVar("color-blue"));
+        let options = chartWithOneDataSet(chartData, ' mm', cssVar("color-blue"));
         let chart = new ApexCharts(document.getElementById("chartModal"), options);
         chart.render();
     } else {
@@ -561,7 +561,7 @@ function getChartModalLayout(topValue1, topValue2, descriptionHdr, description, 
             </div>
             <div class="row">
                 <div class="col">
-                    <div class="p-1" id="chartModal" width="400" height="200"></div>
+                    <div class="text-center" id="chartModal" width="400" height="250"></div>
                 </div>
             </div>
             <div class="row">
