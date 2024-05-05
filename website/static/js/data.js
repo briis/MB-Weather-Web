@@ -11,9 +11,10 @@ const visibilityUnit = `<sup class="text-secondary">km</sup>`;
 const windspeedUnit = `<sup class="text-secondary">m/s</sup>`;
 const uviMax = 12;
 
-let windirGauge;
-let pressureGauge;
 let owl;
+let pressureGauge;
+let sunHeader, sunTime;
+let windirGauge;
 
 let forecastDailyData = [];
 let forecastHourlyData = [];
@@ -143,16 +144,22 @@ function getDailyForecastData() {
             forecastDailyData = data;
             // ** Sun Time Widget **
             if (moment().isBefore(moment(moment.unix(data[0].sunriseepoch)))) {
-                document.getElementById("valSunHeader").innerHTML = 'Solopgang';
+                sunHeader = 'Solopgang';
+                sunTime = moment.unix(data[0].sunriseepoch);
+                document.getElementById("valSunHeader").innerHTML = sunHeader;
                 document.getElementById('valSunIcon').innerHTML = `<img src="/static/images/weather/sunrise.svg" height="60px" width="60px">`;
-                document.getElementById("valSunTime").innerHTML = moment.unix(data[0].sunriseepoch).format('HH:mm');
+                document.getElementById("valSunTime").innerHTML = sunTime.format('HH:mm');
                 document.getElementById('valSunNextChange').innerHTML = `Sol ned: ${moment(moment.unix(data[0].sunsetepoch)).format('HH:mm')}`;
             } else if (moment().isAfter(moment(moment.unix(data[0].sunriseepoch))) && moment().isBefore(moment(moment.unix(data[0].sunsetepoch)))) {
+                sunHeader = 'Solnedgang';
+                sunTime = moment.unix(data[0].sunsetepoch);
                 document.getElementById("valSunHeader").innerHTML = 'Solnedgang';
                 document.getElementById('valSunIcon').innerHTML = `<img src="/static/images/weather/sunset.svg" height="60px" width="60px">`;
-                document.getElementById("valSunTime").innerHTML = moment.unix(data[0].sunsetepoch).format('HH:mm');
+                document.getElementById("valSunTime").innerHTML = sunTime.format('HH:mm');
                 document.getElementById('valSunNextChange').innerHTML = `Sol op: ${moment(moment.unix(data[1].sunriseepoch)).format('HH:mm')} i morgen`;
             } else {
+                sunHeader = 'Solopgang';
+                sunTime = moment.unix(data[1].sunriseepoch);
                 let prefix = '';
                 if (moment().hour() <= 23) { prefix = 'i morgen'; }
                 document.getElementById("valSunHeader").innerHTML = 'Solopgang';
@@ -300,6 +307,20 @@ function displayModal(caller) {
         setupTemperatureModal(modalTitle, modalBody);
     } else if (caller == 'wind') {
         setupWindModal(modalTitle, modalBody);
+    } else if (caller == 'rain') {
+        setupRainModal(modalTitle, modalBody);
+    } else if (caller == 'uv') {
+        setupUVModal(modalTitle, modalBody);
+    } else if (caller == 'sunriseset') {
+        setupSunModal(modalTitle, modalBody);
+    } else if (caller == 'humidity') {
+        setupHumidityModal(modalTitle, modalBody);
+    } else if (caller == 'pressure') {
+        setupPressureModal(modalTitle, modalBody);
+    } else if (caller == 'aqi') {
+        setupAqiModal(modalTitle, modalBody);
+    } else if (caller == 'visibility') {
+        setupVisibilityModal(modalTitle, modalBody);
     }
 }
 
@@ -479,7 +500,7 @@ function pressureTrend(value) {
 // Get Visibility Text
 function visibilityText(value) {
     value = parseFloat(value);
-    if (value < 1) { return 'Det er tåget tåget'; }
+    if (value < 1) { return 'Det er diset eller tåget'; }
     if (value >= 1 && value < 5) { return 'Der er dårlig sigtbarhed'; }
     if (value >= 5 && value < 10) { return 'Sigtbarheden er moderat'; }
     return 'Det er helt klart lige nu';
@@ -492,6 +513,7 @@ function uviDotPosition(uvi) {
 
 // Translate UV index to Text
 function uvindexToText(uvi) {
+    if (uvi == 0) { return 'Solen er nede'; }
     if (uvi < 3) { return 'Lav'; }
     if (uvi >= 3 && uvi < 6) { return 'Moderat'; }
     if (uvi >= 6 && uvi < 8) { return 'Høj'; }
@@ -531,10 +553,74 @@ function isEvenRow(number) {
 // Translate Feels Like Temperature to Text
 function feelsLikeToText(temp) {
     if (temp <= 10) {
-        return `Vind får det til at føles koldere`;
+        return `Vind får det til at føles koldere.`;
     }
     if (temp >= 26) {
-        return `Høj luftfugtighed får det til at føles varmere`;
+        return `Høj luftfugtighed får det til at føles varmere.`;
     }
     return ``;
+}
+
+// Is Dayligt increasing or decreasing
+function isDayLengthIncreasing() {
+    let summerSun = moment("21-03", "DD-MM");
+    let winterSun = moment("22-09", "DD-MM");
+    return moment().isBetween(summerSun, winterSun);
+}
+
+// Calculate Day Length
+function dayLength(startTime, endTime) {
+    let start = moment(startTime, "HH:mm");
+    let end = moment(endTime, "HH:mm");
+    let duration = moment.duration(end.diff(start));
+    let hours = parseInt(duration.asHours());
+    let minutes = parseInt(duration.asMinutes()) - (hours * 60);
+    return `${hours} t. og ${minutes} min.`;
+}
+
+// Calculate remaining dayligt
+function remainingDayLight(sunset) {
+    let start = moment();
+    let end = moment(sunset, "HH:mm");
+    let duration = moment.duration(end.diff(start));
+    let hours = parseInt(duration.asHours());
+    let minutes = parseInt(duration.asMinutes()) - (hours * 60);
+    return `${hours} t. og ${minutes} min.`;
+}
+function calculateDayLengthIncrease() {
+    const equinox = moment("20-03", "DD-MM"); // Assuming the equinox date is March 20th
+    const today = moment();
+    const daysSinceEquinox = today.diff(equinox, 'days');
+    const increasePerDay = 2; // Assuming the day length increases by 2 minutes per day
+    const increaseSinceEquinox = daysSinceEquinox * increasePerDay;
+    const hoursIncreased = Math.floor(increaseSinceEquinox / 60);
+    const minutesIncreased = increaseSinceEquinox % 60;
+    return `${hoursIncreased} t. og ${minutesIncreased} min.`;
+}
+
+function calculateDayLengthDecrease() {
+    const equinox = moment("22-09", "DD-MM"); // Assuming the equinox date is March 20th
+    const today = moment();
+    const daysSinceEquinox = today.diff(equinox, 'days');
+    const decreasePerDay = 2; // Assuming the day length decreases by 2 minutes per day
+    const decreaseSinceEquinox = daysSinceEquinox * decreasePerDay;
+    const hoursDecreased = Math.floor(decreaseSinceEquinox / 60);
+    const minutesDecreased = decreaseSinceEquinox % 60;
+    return `${hoursDecreased} t. og ${minutesDecreased} min.`;
+}
+
+function calculateTimeDifference(endTime) {
+    let hours = endTime.diff(moment(), "hours");
+    let minutes = endTime.diff(moment(), "minutes") % 60;
+    return `${hours} t. og ${minutes} min.`;
+}
+
+// Translate AQI value to Recommended Description
+function aqiValueToRecommend(aqi) {
+    if (aqi <= 50) { return 'Luftkvaliteten er god. Udfør dine sædvanlige udendørsaktiviteter.'; }
+    if (aqi > 50 && aqi <= 100) { return 'Udfør dine sædvanlige udendørsaktiviteter.'; }
+    if (aqi > 100 && aqi <= 150) { return 'For sensitive grupper, overvej at reducere intense udendørsaktiviteter, hvis du oplever symptomer.'; }
+    if (aqi > 150 && aqi <= 200) { return 'Overvej at reducere intense udendørsaktiviteter, hvis du oplever symptomer som irriterede øjne, hoste eller ondt i halsen.'; }
+    if (aqi > 200 && aqi <= 300) { return 'Reducér fysiske aktiviteter, især udendørs, navnlig hvis du oplever symptomer.'; }
+    return 'Undgå fysiske udendørsaktiviteter.';
 }

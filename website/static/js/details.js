@@ -124,12 +124,13 @@ function setupTemperatureModal(modalTitle, modalBody) {
 
     // Set modal body
     let description = `Temperaturen føles lige nu som ${liveData.feels_like_temperature}&deg; og den faktiske temperatur er ${liveData.temperature}&deg;`;
-    description += ` ${feelsLikeToText(liveData.feels_like_temperature)}. Temperaturen i dag vil blive mellem ${liveData.tempmin}&deg; og ${liveData.tempmax}&deg;.`;
+    description += `. ${feelsLikeToText(liveData.feels_like_temperature)} Temperaturen i dag vil blive mellem ${liveData.tempmin}&deg; og ${liveData.tempmax}&deg;.`;
     const explainHdr = 'Om Føles som-temperaturen';
     const explainText = `Føles som-temperaturen angiver hvor varmt eller koldt det føles, og kan afvige fra den faktiske temperatur. Luftfugtighed og vindforhold kan påvirke Føles som-temperaturen.`;
     html = getChartModalLayout(
         `${liveData.temperature}&deg;`,
         `Føles som ${liveData.feels_like_temperature}&deg;`,
+        'Daglig oversigt',
         description,
         explainHdr,
         explainText
@@ -153,7 +154,7 @@ function setupTemperatureModal(modalTitle, modalBody) {
     chartData.push({ name: "Temperatur", type: 'area', data: chartData1 });
     chartData.push({ name: "Dugpunkt", type: 'line', data: chartData2 });
 
-    let options = chartWithTwoDataSets(chartData, '°');
+    let options = chartWithTwoDataSets(chartData, '°', cssVar("color-blue"), cssVar("color-red"));
     let chart = new ApexCharts(document.getElementById("chartModal"), options);
     chart.render();
 
@@ -169,14 +170,383 @@ function setupWindModal(modalTitle, modalBody) {
     modalTitle.innerHTML = "Dagsoversigt - Vind";
 
     // Set modal body
-    modalBody.innerHTML = "<p>Her vil der komme flere detaljer om vindhastighed og retning inklusiv grafer ol..</p>";
+    let description = `Vinden er ${liveData.windspeedavg.toFixed(1)} m/s og kommer fra ${windDegreeToCardinal(liveData.windbearing)}. `;
+    description += `Vindhastigheden i dag vil være op til ${forecastDailyData[0].wind_speed.toFixed(1)} m/s, med vindstød op til ${forecastDailyData[0].wind_gust.toFixed(1)} m/s.`;
+    const explainHdr = 'Om Vindhastighed og Vindstød';
+    const explainText = `Vindhastigheden beregnes vha. gennemsnittet over en kort periode. Et vindstød er et kort øjeblik med kastevind, der ligger over dette gennemsnit. Vindstød varer normalt under 20 sekunder`;
+    html = getChartModalLayout(
+        `${liveData.windspeedavg}<sup class="fw-light text-secondary">m/s</sup> <span class="fs-7 fw-light text-secondary">${windDegreeToCardinal(liveData.windbearing)}</span>`,
+        `Vindstød ${liveData.windgust} m/s`,
+        'Daglig oversigt',
+        description,
+        explainHdr,
+        explainText
+    );
+    modalBody.innerHTML = html;
+
+    // Build Chart
+    let chartData = [];
+    let chartData1 = [];
+    let chartData2 = [];
+    minuteData.forEach((data) => {
+        chartData1.push({
+            x: moment.utc(data['logdate']).format("X") * 1000,
+            y: data['wind_speed']
+        });
+        chartData2.push({
+            x: moment.utc(data['logdate']).format("X") * 1000,
+            y: data['wind_gust']
+        });
+    });
+    chartData.push({ name: "Hastighed", type: 'area', data: chartData1 });
+    chartData.push({ name: "Stød", type: 'line', data: chartData2 });
+
+    let options = chartWithTwoDataSets(chartData, 'm/s', cssVar("color-green"), cssVar("color-orange"));
+    let chart = new ApexCharts(document.getElementById("chartModal"), options);
+    chart.render();
 }
 
 
 // *************************************
+// RAIN MODAL
+// *************************************
+function setupRainModal(modalTitle, modalBody) {
+    // Set modal title
+    const modalHeaderIcon = document.querySelector('.modal-icon');
+    modalHeaderIcon.innerHTML = `<span class="material-icons circle-font bg-blue">water_drop</span>`;
+    modalTitle.innerHTML = "Dagsoversigt - Nedbør";
+
+    // Set modal body
+    let description = `Der er faldet ${liveData.raintoday.toFixed(1)} mm nedbør.<br>`;
+    description += `I dag vil den samlede mængde nedbør være ${forecastDailyData[0].precipitation} mm.`;
+    const explainHdr = '';
+    const explainText = ``;
+    html = getChartModalLayout(
+        `${liveData.raintoday.toFixed(1)}<sup class="fw-light text-secondary">mm</sup>`,
+        `I alt i dag`,
+        'Daglig oversigt',
+        description,
+        explainHdr,
+        explainText
+    );
+    modalBody.innerHTML = html;
+
+    // Build Chart
+    let chartData = [];
+    let chartData1 = [];
+    minuteData.forEach((data) => {
+        chartData1.push({
+            x: moment.utc(data['logdate']).format("X") * 1000,
+            y: data['rain_day']
+        });
+    });
+    chartData.push({ name: "Nedbør", type: 'bar', data: chartData1 });
+    if (chartData1.length > 1) {
+        let options = chartWithOneDataSet(chartData, 'mm', cssVar("color-blue"));
+        let chart = new ApexCharts(document.getElementById("chartModal"), options);
+        chart.render();
+    } else {
+        document.getElementById("chartModal").innerHTML = `<div class="p-4 fs-4 text-center text-secondary">Ingen nedbør de sidste 24 timer</div>`;
+    }
+}
+
+// *************************************
+// UV MODAL
+// *************************************
+function setupUVModal(modalTitle, modalBody) {
+    // Set modal title
+    const modalHeaderIcon = document.querySelector('.modal-icon');
+    modalHeaderIcon.innerHTML = `<span class="material-icons circle-font bg-orange">wb_sunny</span>`;
+    modalTitle.innerHTML = "Dagsoversigt - UV Indeks";
+
+    // Set modal body
+    const descriptionHdr = ``;
+    let description = ``;
+    const explainHdr = 'Om UV-indekset';
+    const explainText = `Verdenssundhedsorganisationens UV-indeks (UVI) måler ultraviolet stråling. Jo højere UVI-niveauet, desto større er risikoen for at få solskader og jo hurtigere kan skader opstå. UVI-niveauet kan hjælpe dig med at beslutte, hvornår du skal beskytte dig mod solen, og hvornår du skal undgå at være udenfor. Verdenssundhedsorganisationen anbefaler at gå i skygge samt brug af solcreme, hat og beskyttende tøj, hvis niveauet er 3 (moderat) eller højere.`;
+    html = getChartModalLayout(
+        `${liveData.uv.toFixed(1)} <span class="fw-light text-secondary">${uvindexToText(liveData.uv)}</span>`,
+        `UV-Indeks fra Verdenssundhedsorganisationen`,
+        descriptionHdr,
+        description,
+        explainHdr,
+        explainText
+    );
+    modalBody.innerHTML = html;
+
+    // Build Chart
+    let chartData = [];
+    let chartData1 = [];
+    minuteData.forEach((data) => {
+        chartData1.push({
+            x: moment.utc(data['logdate']).format("X") * 1000,
+            y: data['uv']
+        });
+    });
+    chartData.push({ name: "UV Indeks", type: 'bar', data: chartData1 });
+
+    let options = chartWithOneDataSet(chartData, '', cssVar("color-amber"));
+    let chart = new ApexCharts(document.getElementById("chartModal"), options);
+    chart.render();
+}
+
+
+// *************************************
+// SUNRISE/SUNSET MODAL
+// *************************************
+function setupSunModal(modalTitle, modalBody) {
+    // Set modal title
+    const modalHeaderIcon = document.querySelector('.modal-icon');
+    modalHeaderIcon.innerHTML = `<span class="material-icons circle-font bg-blue">dew_point</span>`;
+    modalTitle.innerHTML = "Dagsoversigt - Luftfugtighed";
+
+    // Set modal body
+    let dayLightText, dayLightValue, remDayLight
+    if (isDayLengthIncreasing()) {
+        dayLightText = `Dagen er tiltaget med`;
+        dayLightValue = calculateDayLengthIncrease();
+    } else {
+        dayLightText = `Dagen er aftaget med`;
+        dayLightValue = calculateDayLengthDecrease();
+    }
+    const sunrise = moment(moment.unix(forecastDailyData[0].sunriseepoch));
+    const sunset = moment(moment.unix(forecastDailyData[0].sunsetepoch));
+    const daylength = dayLength(sunrise, sunset);
+
+    let description = `<div class="row p-2 bg-grey-light text-secondary-emphasis">`;
+    description += `<div class="col-7">`;
+    description += `<div class="fs-7 fw-semibold">Solopgang i dag</div>`;
+    description += `</div>`;
+    description += `<div class="col-5">`;
+    description += `<div class="fs-7 text-end text-secondary">${sunrise.format('HH:mm')}</div>`;
+    description += `</div>`;
+    description += `</div>`;
+    description += `<div class="row p-2 text-secondary-emphasis">`;
+    description += `<div class="col-7">`;
+    description += `<div class="fs-7 fw-semibold">Solnedgang i dag</div>`;
+    description += `</div>`;
+    description += `<div class="col-5">`;
+    description += `<div class="fs-7 text-end text-secondary">${sunset.format('HH:mm')}</div>`;
+    description += `</div>`;
+    description += `</div>`;
+    description += `<div class="row p-2 bg-grey-light text-secondary-emphasis">`;
+    description += `<div class="col-7">`;
+    description += `<div class="fs-7 fw-semibold">Dagslys i alt</div>`;
+    description += `</div>`;
+    description += `<div class="col-5">`;
+    description += `<div class="fs-7 text-end text-secondary">${daylength}</div>`;
+    description += `</div>`;
+    description += `</div>`;
+    description += `<div class="row p-2 text-secondary-emphasis">`;
+    description += `<div class="col-7">`;
+    description += `<div class="fs-7 fw-semibold">${dayLightText}</div>`;
+    description += `</div>`;
+    description += `<div class="col-5">`;
+    description += `<div class="fs-7 text-end text-secondary">${dayLightValue}</div>`;
+    description += `</div>`;
+    description += `</div>`;
+
+    if (sunHeader === 'Solnedgang') {
+        remDayLight = `Resterende dagslys ${calculateTimeDifference(sunTime)}}`;
+    } else {
+        remDayLight = `Tid til solen står op er ${calculateTimeDifference(sunTime)}`;
+    }
+
+    const descriptionHdr = ``;
+    const explainHdr = '';
+    const explainText = ``;
+    html = getChartModalLayout(
+        `${sunTime.format('HH:mm')}`,
+        `${remDayLight}`,
+        descriptionHdr,
+        description,
+        explainHdr,
+        explainText
+    );
+    modalBody.innerHTML = html;
+    document.getElementById("chartModal").innerHTML = '<canvas cllas="canvas-sun" id="sunCanvas" width=300 height=130></canvas>'
+    const sunRiseHour = sunrise.hour();
+    const sunSetHour = sunset.hour();
+    const sunRiseMin = sunrise.minutes() / 60;
+    const sunSetMin = sunset.minutes() / 60;
+    drawSunArc(parseFloat(sunRiseHour + sunRiseMin), parseFloat(sunSetHour + sunSetMin));
+
+}
+
+
+// *************************************
+// HUMIDITY MODAL
+// *************************************
+function setupHumidityModal(modalTitle, modalBody) {
+    // Set modal title
+    const modalHeaderIcon = document.querySelector('.modal-icon');
+    modalHeaderIcon.innerHTML = `<span class="material-icons circle-font bg-blue">dew_point</span>`;
+    modalTitle.innerHTML = "Dagsoversigt - Luftfugtighed";
+
+    // Create Array for Chart Data
+    let chartData = [];
+    let chartData1 = [];
+    minuteData.forEach((data) => {
+        chartData1.push({
+            x: moment.utc(data['logdate']).format("X") * 1000,
+            y: data['humidity']
+        });
+    });
+    chartData.push({ name: "Luftfugtighed", type: 'area', data: chartData1 });
+    const avgHumidity = chartData1.reduce((a, b) => a + b.y, 0) / chartData1.length;
+
+    // Set modal body
+    const descriptionHdr = `Daglig oversigt`;
+    const description = `Den gennemsnitlige luftfugtighed de sidste 24 timer er ${avgHumidity.toFixed(0)}%`;
+    const explainHdr = 'Om luftfugtighed';
+    const explainText = `Relativ luftfugtighed, som almindeligvis blot kaldes luftfugtighed, er mængden af fugt i luften i forhold til, hvad luften kan indeholde. Luften kan indeholde mere fugt ved høje temperaturer. En relativ luftfugtighed tæt på 100% betyder, at der kan opstå dug eller tåge.`;
+    html = getChartModalLayout(
+        `${liveData.humidity.toFixed(0)}%`,
+        `Dugpunktet er ${liveData.dewpoint.toFixed(1)}&deg;`,
+        descriptionHdr,
+        description,
+        explainHdr,
+        explainText
+    );
+    modalBody.innerHTML = html;
+
+    // Build Chart
+    let options = chartWithOneDataSet(chartData, '%', cssVar("color-blue"));
+    let chart = new ApexCharts(document.getElementById("chartModal"), options);
+    chart.render();
+}
+
+
+// *************************************
+// PRESSURE MODAL
+// *************************************
+function setupPressureModal(modalTitle, modalBody) {
+    // Set modal title
+    const modalHeaderIcon = document.querySelector('.modal-icon');
+    modalHeaderIcon.innerHTML = `<span class="material-icons circle-font bg-red">speed</span>`;
+    modalTitle.innerHTML = "Dagsoversigt - Lufttryk";
+
+    // Create Array for Chart Data
+    let chartData = [];
+    let chartData1 = [];
+    minuteData.forEach((data) => {
+        chartData1.push({
+            x: moment.utc(data['logdate']).format("X") * 1000,
+            y: data['pressure']
+        });
+    });
+    chartData.push({ name: "Lufttryk", type: 'area', data: chartData1 });
+    const avgPressure = chartData1.reduce((a, b) => a + b.y, 0) / chartData1.length;
+
+    // Set modal body
+    const descriptionHdr = `Daglig oversigt`;
+    const description = `Det gennemsnitlige lufttryk de sidste 24 timer er ${avgPressure.toFixed(0)} hPa (Hektopascal)`;
+    const explainHdr = 'Om lufttryk';
+    const explainText = `Hurtige og betydelige ændringer i lufttrykket bruges til at forudsige vejrændringer. Faldende lufttryk kan for eksempel betyde, at der er regn eller sne på vej, mens stigende lufttryk kan betyde, at vejret er ved at blive bedre. Lufttryk kaldes også barometrisk tryk eller atmosfærisk tryk.`;
+    html = getChartModalLayout(
+        `${liveData.sealevelpressure.toFixed(0)} hPa`,
+        `${pressureTrend(liveData.pressuretrend)[0]}`,
+        descriptionHdr,
+        description,
+        explainHdr,
+        explainText
+    );
+    modalBody.innerHTML = html;
+
+    // Build Chart
+    let options = chartWithOneDataSet(chartData, 'hPa', cssVar("color-blue"));
+    let chart = new ApexCharts(document.getElementById("chartModal"), options);
+    chart.render();
+}
+
+// *************************************
+// AIR QUALITY MODAL
+// *************************************
+function setupAqiModal(modalTitle, modalBody) {
+    // Set modal title
+    const modalHeaderIcon = document.querySelector('.modal-icon');
+    modalHeaderIcon.innerHTML = `<span class="material-icons circle-font bg-green">grain</span>`;
+    modalTitle.innerHTML = "Dagsoversigt - Luftkvalitet";
+
+    // Create Array for Chart Data
+    let chartData = [];
+    let chartData1 = [];
+    minuteData.forEach((data) => {
+        chartData1.push({
+            x: moment.utc(data['logdate']).format("X") * 1000,
+            y: data['air_Quality_pm25']
+        });
+    });
+    chartData.push({ name: "Lufttryk", type: 'area', data: chartData1 });
+
+    // Set modal body
+    const descriptionHdr = `Sundhedsoplysninger`;
+    const description = `${aqiValueToRecommend(liveData.aqi)}`;
+    const explainHdr = 'Om PM2.5 Partikler';
+    const explainText = `PM2.5 er en skala til måling af luftkvalitet i realtid. Dens værdier varierer fra 0 til større end 250.`;
+    html = getChartModalLayout(
+        `${liveData.pm25.toFixed(0)} PM<sup>2.5</sup>`,
+        `${aqiValueToText(liveData.aqi)}`,
+        descriptionHdr,
+        description,
+        explainHdr,
+        explainText
+    );
+    modalBody.innerHTML = html;
+
+    // Build Chart
+    let options = chartWithOneDataSet(chartData, ` PM2.5`, cssVar("color-grey"));
+    let chart = new ApexCharts(document.getElementById("chartModal"), options);
+    chart.render();
+}
+
+// *************************************
+// VISIBILITY MODAL
+// *************************************
+function setupVisibilityModal(modalTitle, modalBody) {
+    // Set modal title
+    const modalHeaderIcon = document.querySelector('.modal-icon');
+    modalHeaderIcon.innerHTML = `<span class="material-icons circle-font bg-green">visibility</span>`;
+    modalTitle.innerHTML = "Dagsoversigt - Sigtbarhed";
+
+    // Create Array for Chart Data
+    let chartData = [];
+    let chartData1 = [];
+    forecastHourlyData.forEach((data) => {
+        if (moment().isSame(moment.utc(data['datetime']), 'day')) {
+            chartData1.push({
+                x: moment.utc(data['datetime']).format("X") * 1000,
+                y: data['visibility']
+            });
+        }
+    });
+    chartData.push({ name: "Sigtbarhed", type: 'line', data: chartData1 });
+
+    // Set modal body
+    const descriptionHdr = `Daglig oversigt`;
+    const description = `Sigtbarheden i dag vil være (Indsæt værdi)`;
+    const explainHdr = 'Om Sigtbarhed';
+    const explainText = `Sigtbarhed siger noget om, hvor langt væk du tydeligt kan se objekter som f.eks bygninger og bakker. Det er et mål for luftens gennemsigtighed og tager ikke højde for mængden af sollys eller tilstedeværelsen af ting der spærrer for udsynet. En sigtbarhed på mindst 10 km anses som klar sigtbarhed.`;
+    html = getChartModalLayout(
+        `${liveData.visibility.toFixed(0)} KM`,
+        `${visibilityText(liveData.visibility)}`,
+        descriptionHdr,
+        description,
+        explainHdr,
+        explainText
+    );
+    modalBody.innerHTML = html;
+
+    // Build Chart
+    let options = chartWithOneDataSet(chartData, ` KM`, cssVar("color-green"), 'solid');
+    let chart = new ApexCharts(document.getElementById("chartModal"), options);
+    chart.render();
+}
+
+// *************************************
 // CHART MODAL HTML TEMPLATE
 // *************************************
-function getChartModalLayout(topValue1, topValue2, description, explainHdr, explainText) {
+function getChartModalLayout(topValue1, topValue2, descriptionHdr, description, explainHdr, explainText) {
     return `
         <div class="container p-2">
             <div class="row">
@@ -186,7 +556,7 @@ function getChartModalLayout(topValue1, topValue2, description, explainHdr, expl
             </div>
             <div class="row">
                 <div class="col">
-                    <div class="mt-n2 mb-2 fs-7 text-secondary">${topValue2}</div>
+                    <div class="mt-n1 mb-2 fs-7 text-secondary">${topValue2}</div>
                 </div>
             </div>
             <div class="row">
@@ -196,7 +566,7 @@ function getChartModalLayout(topValue1, topValue2, description, explainHdr, expl
             </div>
             <div class="row">
                 <div class="col">
-                    <div class="fs-6 fw-semibold">Daglig oversigt</div>
+                    <div class="fs-6 fw-semibold">${descriptionHdr}</div>
                 </div>
             </div>
             <div class="row">
