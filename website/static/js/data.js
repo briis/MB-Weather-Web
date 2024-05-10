@@ -37,7 +37,7 @@ $('document').ready(function () {
     // Update data every 30 seconds
     setInterval(function () {
         getWeatherData();
-    }, 30000);
+    }, 15000);
     // Update daily forecast every 15 minutes
     setInterval(function () {
         getDailyForecastData();

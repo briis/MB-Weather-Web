@@ -14,6 +14,7 @@
     --color-orange: rgba(255, 152, 0, 1);
     --color-transparent: #00;
     --color-white: rgba(255, 255, 255, 1);
+    --arc-diameter: 170px;
 }
 
 a:link,

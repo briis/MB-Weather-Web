@@ -199,7 +199,7 @@ function setupWindModal(modalTitle, modalBody) {
         });
     });
     chartData.push({ name: "Hastighed", type: 'area', data: chartData1 });
-    chartData.push({ name: "Stød", type: 'line', data: chartData2 });
+    chartData.push({ name: "Vindstød", type: 'line', data: chartData2 });
 
     let options = chartWithTwoDataSets(chartData, ' m/s', cssVar("color-green"), cssVar("color-orange"));
     let chart = new ApexCharts(document.getElementById("chartModal"), options);
@@ -234,15 +234,21 @@ function setupRainModal(modalTitle, modalBody) {
     // Build Chart
     let chartData = [];
     let chartData1 = [];
+    let chartData2 = [];
     minuteData.forEach((data) => {
         chartData1.push({
+            x: moment.utc(data['logdate']).format("X") * 1000,
+            y: data['rain_hour']
+        });
+        chartData2.push({
             x: moment.utc(data['logdate']).format("X") * 1000,
             y: data['rain_day']
         });
     });
-    chartData.push({ name: "Nedbør", type: 'bar', data: chartData1 });
+    chartData.push({ name: "Nedbør", type: 'area', data: chartData1 });
+    chartData.push({ name: "Nedbør i dag", type: 'line', data: chartData2 });
     if (chartData1.length > 1) {
-        let options = chartWithOneDataSet(chartData, ' mm', cssVar("color-blue"));
+        let options = chartWithTwoDataSetsScales(chartData, ' mm', cssVar("color-blue"), cssVar("color-green"), 'gradient', 1);
         let chart = new ApexCharts(document.getElementById("chartModal"), options);
         chart.render();
     } else {
@@ -297,8 +303,8 @@ function setupUVModal(modalTitle, modalBody) {
 function setupSunModal(modalTitle, modalBody) {
     // Set modal title
     const modalHeaderIcon = document.querySelector('.modal-icon');
-    modalHeaderIcon.innerHTML = `<span class="material-icons circle-font bg-blue">dew_point</span>`;
-    modalTitle.innerHTML = "Dagsoversigt - Luftfugtighed";
+    modalHeaderIcon.innerHTML = `<span class="material-icons circle-font bg-orange">wb_twilight</span>`;
+    modalTitle.innerHTML = `${sunHeader}`;
 
     // Set modal body
     let dayLightText, dayLightValue, remDayLight
@@ -364,6 +370,25 @@ function setupSunModal(modalTitle, modalBody) {
         explainText
     );
     modalBody.innerHTML = html;
+
+    // html_sun = `<div class="sunmoon">`;
+    // html_sun += `<div class="sun-times">`;
+    // html_sun += `<div class="sun-path">`;
+    // html_sun += `<div class="sun-animation"></div>`;
+    // html_sun += `<div class="sun-symbol-path"><span class="symbol">☀</span></div>`;
+    // html_sun += `</div>`;
+    // html_sun += `<div class="legend">`;
+    // html_sun += `<div class="sunrise">${sunrise.format('HH:mm')}</div>`;
+    // html_sun += `<div class="sunset">${sunset.format('HH:mm')}</div>`;
+    // html_sun += `</div>`;
+    // html_sun += `<div class="clear">&nbsp;</div>`;
+    // html_sun += `</div>`;
+    // html_sun += `</div>`;
+    // document.getElementById("chartModal").innerHTML = html_sun;
+    // $('.sunmoon .sun-animation').css('width', '50%');
+    // $('.sun-symbol-path').css('transform: rotateZ(0deg)');
+    // $('.sun-symbol-path').css('-webkit-transform', 'rotateZ(0deg)');
+
     document.getElementById("chartModal").innerHTML = '<canvas cllas="canvas-sun" id="sunCanvas" width=300 height=130></canvas>'
     const sunRiseHour = sunrise.hour();
     const sunSetHour = sunset.hour();
@@ -561,7 +586,7 @@ function getChartModalLayout(topValue1, topValue2, descriptionHdr, description, 
             </div>
             <div class="row">
                 <div class="col">
-                    <div class="text-center" id="chartModal" width="400" height="250"></div>
+                    <div class="p-0 m-0 pb-3" id="chartModal" width="400" height="250"></div>
                 </div>
             </div>
             <div class="row">
