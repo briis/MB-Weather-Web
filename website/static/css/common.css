@@ -15,6 +15,13 @@
     --color-transparent: #00;
     --color-white: rgba(255, 255, 255, 1);
     --arc-diameter: 170px;
+    --sun-arc-background: rgb(245, 248, 251);
+    --sun-arc-circle: rgb(210, 225, 237);
+    --sun-arc-horizon-line: rgb(207, 207, 207);
+    --sun-arc-text: rgb(70, 70, 70);
+    --sun-arc-text-disabled: rgb(129, 151, 167);
+    --sun-arc-sunup: rgb(251, 184, 12);
+    --sun-arc-sundown: rgb(86, 108, 129);
 }
 
 a:link,
@@ -113,9 +120,7 @@ a:hover {
 }
 
 .canvas-sun {
-    background: var(--color-grey);
-    border-radius: 8px;
-    border: 1px solid var(--color-grey-light);
+    background: var(--color-white);
 }
 
 .card .img-wrapper {
@@ -236,6 +241,15 @@ img {
 
 .mt-n3 {
     margin-top: -1rem;
+}
+
+.sun-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 240px;
+    width: 100%;
 }
 
 @media only screen and (max-width: 600px) {

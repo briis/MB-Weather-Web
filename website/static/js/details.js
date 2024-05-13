@@ -316,6 +316,7 @@ function setupSunModal(modalTitle, modalBody) {
         dayLightValue = calculateDayLengthDecrease();
     }
     const sunrise = moment(moment.unix(forecastDailyData[0].sunriseepoch));
+    const sunriseNext = moment(moment.unix(forecastDailyData[1].sunriseepoch));
     const sunset = moment(moment.unix(forecastDailyData[0].sunsetepoch));
     const daylength = dayLength(sunrise, sunset);
 
@@ -389,13 +390,21 @@ function setupSunModal(modalTitle, modalBody) {
     // $('.sun-symbol-path').css('transform: rotateZ(0deg)');
     // $('.sun-symbol-path').css('-webkit-transform', 'rotateZ(0deg)');
 
-    document.getElementById("chartModal").innerHTML = '<canvas cllas="canvas-sun" id="sunCanvas" width=300 height=130></canvas>'
-    const sunRiseHour = sunrise.hour();
-    const sunSetHour = sunset.hour();
-    const sunRiseMin = sunrise.minutes() / 60;
-    const sunSetMin = sunset.minutes() / 60;
-    drawSunArc(parseFloat(sunRiseHour + sunRiseMin), parseFloat(sunSetHour + sunSetMin));
-
+    document.getElementById("chartModal").innerHTML = '<div class="sun-container"><canvas class="canvas-sun" id="sunCanvas" width=220 height=220></canvas></div>'
+    const now = moment();
+    const minutesSinceSunrise = now.diff(sunrise, 'minutes');
+    const minutesSinceSunset = now.diff(sunset, 'minutes');
+    const daylightMinutes = sunset.diff(sunrise, 'minutes');
+    const nightMinutes = 1440 - daylightMinutes;
+    let isDay = true;
+    if (now > sunset && now < sunriseNext) { isDay = false; }
+    let anglePosition = 0;
+    if (isDay) {
+        anglePosition = 2 - (daylightMinutes - minutesSinceSunrise) / daylightMinutes;
+    } else {
+        anglePosition = minutesSinceSunset / nightMinutes;
+    }
+    drawSunHorizon('sunCanvas', sunrise.format('HH:mm'), sunriseNext.format('HH:mm'), sunset.format('HH:mm'), anglePosition, isDay);
 }
 
 
