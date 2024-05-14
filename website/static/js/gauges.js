@@ -75,9 +75,9 @@ function drawSunHorizon(sunCanvas, sunrise, nextSunrise, sunset, anglePosition, 
     ctx.textAlign = 'center';
     ctx.textBaseline = "middle";
     if (isDay) {
-        ctx.fillText(nextSunrise, centerX, baseHeight * 9);
+        ctx.fillText(sunrise, centerX, baseHeight * 9);
     } else {
-        ctx.fillText(sunrise, centerX, baseHeight * 8.5);
+        ctx.fillText(nextSunrise, centerX, baseHeight * 9);
     }
     ctx.stroke();
 
@@ -159,3 +159,103 @@ function drawSunHorizon(sunCanvas, sunrise, nextSunrise, sunset, anglePosition, 
 
 }
 
+
+// *************************************
+// DRAW WIND COMPASS
+// *************************************
+function drawWindCompass(bearing, windspeed) {
+    const canvas = document.getElementById('valWindbearing');
+    const ctx = canvas.getContext('2d');
+    const centerX = canvas.width / 2;
+    const centerY = canvas.height / 2;
+    const margin = 5;
+    const insideMargin = 30;
+    const circleBorderWidth = 8;
+    const radius = centerX - margin * 2;
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Draw the compass circle
+    ctx.beginPath();
+    ctx.fillStyle = cssVar("color-white");
+    ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
+    ctx.lineWidth = circleBorderWidth;
+    ctx.strokeStyle = cssVar("color-grey-light");
+    ctx.fill();
+    ctx.stroke();
+
+    // Draw the compass Letters
+    ctx.beginPath();
+    ctx.font = '10px Roboto';
+    ctx.fillStyle = cssVar("color-disabled");
+    ctx.textAlign = 'center';
+    ctx.textBaseline = "middle";
+    ctx.fillText('N', centerX, margin + circleBorderWidth - 2);
+    ctx.fillText('S', centerX, canvas.height - circleBorderWidth - 2);
+    ctx.fillText('Ø', canvas.width - circleBorderWidth - 2, centerY);
+    ctx.fillText('V', circleBorderWidth + 2, centerY);
+    ctx.stroke();
+
+    // Draw Minor Tickmarks
+    minorTicks = 16;
+    angleTicks = 360 / minorTicks;
+    for (let i = 0; i < minorTicks; i++) {
+        if (i == 0 || i == 4 || i == 8 || i == 12) { continue; }
+        let x = radius * Math.cos(degrees_to_radians(i * angleTicks));
+        let y = radius * Math.sin(degrees_to_radians(i * angleTicks));
+        draw_rectangle(centerX + x, centerY + y, 1, circleBorderWidth, i * angleTicks, ctx);
+    }
+
+    // Draw the current position
+    let anglePosition = 0;
+    if (bearing > 180) {
+        anglePosition = 1 + (bearing - 270) / 180;
+    } else {
+        anglePosition = (bearing / 180) - 0.5;
+    }
+    ctx.beginPath();
+    ctx.fillStyle = cssVar("color-green");
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = cssVar("color-grey-light");
+    let angle = 180 * anglePosition;
+    if (angle > 359) { angle = 0; }
+    let rad = angle * Math.PI / 180;
+    let x = centerX + radius * Math.cos(rad);
+    let y = centerY + radius * Math.sin(rad);
+    ctx.arc(x, y, 6, 0, 2 * Math.PI, true);
+    ctx.fill();
+    ctx.stroke();
+
+    // Draw Text Inside
+    const cardinal = windDegreeToCardinal(bearing);
+    ctx.beginPath();
+    ctx.font = '400 1.2em Roboto';
+    ctx.fillStyle = cssVar("color-disabled");
+    ctx.textAlign = 'center';
+    ctx.textBaseline = "middle";
+    ctx.fillText(cardinal, centerX, centerY - (insideMargin + margin));
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.font = '300 2.1em Roboto';
+    ctx.fillStyle = cssVar("color-disabled");
+    ctx.textAlign = 'center';
+    ctx.textBaseline = "middle";
+    ctx.fillText(windspeed, centerX, centerY);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.font = '400 1em Roboto';
+    ctx.fillStyle = cssVar("color-disabled");
+    ctx.textAlign = 'center';
+    ctx.textBaseline = "middle";
+    ctx.fillText('m/s', centerX, centerY + margin * 4);
+    ctx.stroke();
+
+    function draw_rectangle(x, y, w, h, deg, ctx) {
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.rotate(degrees_to_radians(deg + 90));
+        ctx.fillStyle = cssVar("color-grey");
+        ctx.fillRect(-1 * (w / 2), -1 * (h / 2), w, h);
+        ctx.restore();
+    }
+}

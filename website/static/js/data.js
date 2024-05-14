@@ -27,7 +27,7 @@ let monthData = [];
 // *************************************
 $('document').ready(function () {
     moment.locale('da');
-    windirGauge = createWindDirGauge();
+    // windirGauge = createWindDirGauge();
     pressureGauge = createPressureGauge();
     getWeatherData();
     getDailyForecastData();
@@ -88,12 +88,13 @@ function getWeatherData() {
             document.getElementById("valTempMin").innerHTML = data.tempmin + degrees;
             document.getElementById("valWindgust").innerHTML = data.windgust + windspeedUnit;
             // ** Wind Widget **
-            windirGauge.value = data.windbearing;
-            windirGauge.update({
-                units: `${data.windspeedavg.toFixed(1)} m/s`,
-                title: `${data.windbearing}${String.fromCharCode(176)}`,
-            });
-            document.getElementById("valWinddir").innerHTML = `${windDegreeToCardinal(data.windbearing)}`;
+            drawWindCompass(data.windbearing, data.windspeedavg);
+            // windirGauge.value = data.windbearing;
+            // windirGauge.update({
+            //     units: `${data.windspeedavg.toFixed(1)} m/s`,
+            //     title: `${data.windbearing}${String.fromCharCode(176)}`,
+            // });
+            // document.getElementById("valWinddir").innerHTML = `${windDegreeToCardinal(data.windbearing)}`;
             // ** Rain Widget **
             document.getElementById("valRainToday").innerHTML = data.raintoday.toFixed(1) + rainUnit;
             // document.getElementById("valRainForecastToday").innerHTML = '';
@@ -624,3 +625,8 @@ function aqiValueToRecommend(aqi) {
     if (aqi > 200 && aqi <= 300) { return 'Reducér fysiske aktiviteter, især udendørs, navnlig hvis du oplever symptomer.'; }
     return 'Undgå fysiske udendørsaktiviteter.';
 }
+
+// Convert Degrees to Radians
+function degrees_to_radians(degrees) {
+    return degrees * Math.PI / 180;
+};

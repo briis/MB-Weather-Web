@@ -4,8 +4,10 @@
     --color-blue: rgba(32, 151, 243, 1);
     --color-brown: rgba(121, 86, 72, 1);
     --color-blue-light: rgba(0, 168, 244, 1);
-    --color-disabled: rgba(138, 138, 138, 1);
+    --color-disabled: rgb(108, 117, 125, 1);
     --color-green: rgba(76, 175, 80, 1);
+    --color-green-light: rgba(76, 175, 80, 0.2);
+    --color-green-light2: rgba(140, 194, 75, 0.3);
     --color-grey: rgba(158, 158, 158, 1);
     --color-grey-dark: rgba(33, 33, 33, 1);
     --color-grey-light: rgba(224, 224, 224, 1);
@@ -241,6 +243,10 @@ img {
 
 .mt-n3 {
     margin-top: -1rem;
+}
+
+.mt-n4 {
+    margin-top: -1.2rem;
 }
 
 .sun-container {

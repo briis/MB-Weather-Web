@@ -37,11 +37,11 @@
             <div class="mb-auto px-2 pt-2 pb-1 fs-0 text-secondary fw-lighter align-self-center" id="valTemperature">
             </div>
             <div class="d-flex flex-row justify-content-between pt-4">
-              <div class="ps-2 fs-7 fw-light">
+              <div class="ps-1 fs-7 fw-light">
                 <div class="pb-0">Føles som</div>
                 <div class="fg-blue" id="valFeelsLike"></div>
               </div>
-              <div class="pe-2 fs-7 fw-light text-end">
+              <div class="pe-1 fs-7 fw-light text-end">
                 <div class=" pb-0">Høj | Lav</div>
                 <div class="text-end"><span class="fg-red" id="valTempMax"></span> | <span class="fg-blue"
                     id="valTempMin"></span>
@@ -51,7 +51,7 @@
           </div>
         </div>
         <div class="card-footer bg-body p-1 fs-7">
-          <div class="ps-2"><a href="#" data-bs-toggle="modal" data-bs-target="#modalDefinition"
+          <div class="ps-1"><a href="#" data-bs-toggle="modal" data-bs-target="#modalDefinition"
               data-bs-caller="temperature">Dagsoversigt <span
                 class="material-icons align-middle fs-7">open_in_new</span></a></div>
         </div>
@@ -66,21 +66,14 @@
         </div>
         <div class="card-body widget p-1">
           <div class="d-flex flex-column justify-content-start">
-            <canvas class="align-self-center mb-auto mt-n3" id="valWindbearing"></canvas>
-            <div class="d-flex flex-row justify-content-between mt-n1">
-              <div class="ps-2 fs-7 fw-light">
-                <div class="pb-0">Vind fra</div>
-                <div class="fg-blue" id="valWinddir"></div>
-              </div>
-              <div class="pe-2 fs-7 fw-light text-end">
-                <div class="pb-0">Vindstød</div>
-                <div class="text-end fg-blue" id="valWindgust"></div>
-              </div>
+            <canvas class="align-self-center mb-auto mt-n4" width="155px" height="155px" id="valWindbearing"></canvas>
+            <div class="ps-1 fs-7 fw-light text-start mt-n1">
+              <div class="pb-0">Vindstød <span class="text-start fg-blue" id="valWindgust"></span></div>
             </div>
           </div>
         </div>
         <div class="card-footer bg-body p-1 fs-7">
-          <div class="ps-2"><a href="#" data-bs-toggle="modal" data-bs-target="#modalDefinition"
+          <div class="ps-1"><a href="#" data-bs-toggle="modal" data-bs-target="#modalDefinition"
               data-bs-caller="wind">Dagsoversigt <span class="material-icons align-middle fs-7">open_in_new</span></a>
           </div>
         </div>
@@ -96,17 +89,17 @@
         <div class="card-body widget p-1">
           <div class="d-flex flex-column">
             <div class="mb-auto px-2 pt-2 text-secondary fs-0 fw-lighter" id="valRainToday"></div>
-            <div class="px-3 pb-1 fs-7 fw-light mt-n3">siden midnat</div>
+            <div class="px-2 pb-1 fs-7 fw-light mt-n3">siden midnat</div>
           </div>
           <div class="d-flex flex-row justify-content-between pt-3">
-            <div class="ps-2 fs-7 fw-light">
+            <div class="ps-1 fs-7 fw-light">
               <div class="pb-0">Intensitet</div>
               <div class="fg-blue" id="valRainRate"></div>
             </div>
           </div>
         </div>
         <div class="card-footer bg-body p-1 fs-7">
-          <div class="ps-2"><a href="#" data-bs-toggle="modal" data-bs-target="#modalDefinition"
+          <div class="ps-1"><a href="#" data-bs-toggle="modal" data-bs-target="#modalDefinition"
               data-bs-caller="rain">Dagsoversigt <span class="material-icons align-middle fs-7">open_in_new</span></a>
           </div>
         </div>
@@ -124,14 +117,14 @@
             <div class="fs-0 text-secondary fw-lighter" id="valSunTime"></div>
             <div class="fs-7 mt-n3" id="valSunIcon"></div>
             <div class="d-flex flex-row align-self-start pt-3">
-              <div class="ps-2 fs-7 fw-light">
+              <div class="ps-1 fs-7 fw-light">
                 <div class="pb-0" id="valSunNextChange"></div>
               </div>
             </div>
           </div>
         </div>
         <div class="card-footer bg-body p-1 fs-7">
-          <div class="ps-2"><a href="#" data-bs-toggle="modal" data-bs-target="#modalDefinition"
+          <div class="ps-1"><a href="#" data-bs-toggle="modal" data-bs-target="#modalDefinition"
               data-bs-caller="sunriseset">Dagsoversigt <span
                 class="material-icons align-middle fs-7">open_in_new</span></a>
           </div>
@@ -156,14 +149,14 @@
             </div>
           </div>
           <div class="d-flex flex-row justify-content-between pt-3">
-            <div class="ps-2 fs-7 fw-light">
+            <div class="ps-1 fs-7 fw-light">
               <div class="pb-0">Solstråling</div>
               <div class="fg-blue" id="valSolarRad"></div>
             </div>
           </div>
         </div>
         <div class="card-footer bg-body p-1 fs-7">
-          <div class="ps-2"><a href="#" data-bs-toggle="modal" data-bs-target="#modalDefinition"
+          <div class="ps-1"><a href="#" data-bs-toggle="modal" data-bs-target="#modalDefinition"
               data-bs-caller="uv">Dagsoversigt <span class="material-icons align-middle fs-7">open_in_new</span></a>
           </div>
         </div>
@@ -180,14 +173,14 @@
           <div class="d-flex flex-column">
             <div class="mb-auto px-2 pt-2 fs-0 text-secondary fw-lighter align-self-center" id="valHumidity"></div>
             <div class="d-flex flex-row align-self-start pt-5">
-              <div class="ps-2 fs-7 fw-light">
+              <div class="ps-1 fs-7 fw-light">
                 <div class="pb-0" id="valDewPointText"></div>
               </div>
             </div>
           </div>
         </div>
         <div class="card-footer bg-body p-1 fs-7">
-          <div class="ps-2"><a href="#" data-bs-toggle="modal" data-bs-target="#modalDefinition"
+          <div class="ps-1"><a href="#" data-bs-toggle="modal" data-bs-target="#modalDefinition"
               data-bs-caller="humidity">Dagsoversigt <span
                 class="material-icons align-middle fs-7">open_in_new</span></a>
           </div>
@@ -205,11 +198,11 @@
           <div class="d-flex flex-column justify-content-start">
             <canvas class="align-self-center mb-auto mt-n3" id="valPressureGauge"></canvas>
             <div class="d-flex flex-row justify-content-between mt-n1">
-              <div class="ps-2 fs-7 fw-light">
+              <div class="ps-1 fs-7 fw-light">
                 <div class="pb-0">Trend</div>
                 <div class="fg-blue" id="valPressureTrend"></div>
               </div>
-              <div class="pe-2 fs-7 fw-light text-end">
+              <div class="pe-1 fs-7 fw-light text-end">
                 <div class="pb-0">Lufttryk</div>
                 <div class="text-end fg-blue" id="valPressure"></div>
               </div>
@@ -217,7 +210,7 @@
           </div>
         </div>
         <div class="card-footer bg-body p-1 fs-7">
-          <div class="ps-2"><a href="#" data-bs-toggle="modal" data-bs-target="#modalDefinition"
+          <div class="ps-1"><a href="#" data-bs-toggle="modal" data-bs-target="#modalDefinition"
               data-bs-caller="pressure">Dagsoversigt <span
                 class="material-icons align-middle fs-7">open_in_new</span></a>
           </div>
@@ -241,12 +234,12 @@
             </div>
           </div>
           <div class="d-flex flex-row justify-content-between pt-3">
-            <div class="ps-2 fs-7 fw-light">
+            <div class="ps-1 fs-7 fw-light">
             </div>
           </div>
         </div>
         <div class="card-footer bg-body p-1 fs-7">
-          <div class="ps-2"><a href="#" data-bs-toggle="modal" data-bs-target="#modalDefinition"
+          <div class="ps-1"><a href="#" data-bs-toggle="modal" data-bs-target="#modalDefinition"
               data-bs-caller="aqi">Dagsoversigt <span class="material-icons align-middle fs-7">open_in_new</span></a>
           </div>
         </div>
@@ -263,14 +256,14 @@
           <div class="d-flex flex-column">
             <div class="mb-auto px-2 pt-2 fs-0 text-secondary fw-lighter align-self-center" id="valVisibility"></div>
             <div class="d-flex flex-row align-self-start pt-5">
-              <div class="ps-2 fs-7 fw-light">
+              <div class="ps-1 fs-7 fw-light">
                 <div class="pb-0" id="valVisibilityText"></div>
               </div>
             </div>
           </div>
         </div>
         <div class="card-footer bg-body p-1 fs-7">
-          <div class="ps-2"><a href="#" data-bs-toggle="modal" data-bs-target="#modalDefinition"
+          <div class="ps-1"><a href="#" data-bs-toggle="modal" data-bs-target="#modalDefinition"
               data-bs-caller="visibility">Dagsoversigt <span
                 class="material-icons align-middle fs-7">open_in_new</span></a>
           </div>
