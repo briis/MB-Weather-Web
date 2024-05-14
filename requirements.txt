@@ -9,7 +9,7 @@ mock
 mysql-connector-python
 pyflakes
 pylint
-pymeteobridgesql==1.2.3
+pymeteobridgesql==1.2.5
 pymysql
 pytest
 pytest-asyncio

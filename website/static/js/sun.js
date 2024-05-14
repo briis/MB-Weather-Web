@@ -11,7 +11,6 @@ function drawSunHorizon(sunCanvas, sunrise, nextSunrise, sunset, anglePosition, 
     const baseHeight = canvas.height / 25;
     const centerRectWidth = canvas.width / 3;
     const centerRectHeight = baseHeight * 3;
-    console.log(centerRectWidth, centerRectHeight);
     const sunRadius = centerX - margin * 2;
 
     // Draw the sun circle
@@ -124,6 +123,7 @@ function drawSunHorizon(sunCanvas, sunrise, nextSunrise, sunset, anglePosition, 
         ctx.arc(centerX, centerY, sunRadius, 0, anglePosition * Math.PI, false);
     }
     ctx.stroke();
+
     // Draw White Circle on Arc Position
     ctx.beginPath();
     ctx.fillStyle = cssVar("color-white");

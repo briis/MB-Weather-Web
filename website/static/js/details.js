@@ -372,25 +372,7 @@ function setupSunModal(modalTitle, modalBody) {
     );
     modalBody.innerHTML = html;
 
-    // html_sun = `<div class="sunmoon">`;
-    // html_sun += `<div class="sun-times">`;
-    // html_sun += `<div class="sun-path">`;
-    // html_sun += `<div class="sun-animation"></div>`;
-    // html_sun += `<div class="sun-symbol-path"><span class="symbol">☀</span></div>`;
-    // html_sun += `</div>`;
-    // html_sun += `<div class="legend">`;
-    // html_sun += `<div class="sunrise">${sunrise.format('HH:mm')}</div>`;
-    // html_sun += `<div class="sunset">${sunset.format('HH:mm')}</div>`;
-    // html_sun += `</div>`;
-    // html_sun += `<div class="clear">&nbsp;</div>`;
-    // html_sun += `</div>`;
-    // html_sun += `</div>`;
-    // document.getElementById("chartModal").innerHTML = html_sun;
-    // $('.sunmoon .sun-animation').css('width', '50%');
-    // $('.sun-symbol-path').css('transform: rotateZ(0deg)');
-    // $('.sun-symbol-path').css('-webkit-transform', 'rotateZ(0deg)');
-
-    document.getElementById("chartModal").innerHTML = '<div class="sun-container"><canvas class="canvas-sun" id="sunCanvas" width=220 height=220></canvas></div>'
+    document.getElementById("chartModal").innerHTML = '<div class="sun-container"><canvas class="canvas-sun" id="sunCanvas" width=250 height=250></canvas></div>'
     const now = moment();
     const minutesSinceSunrise = now.diff(sunrise, 'minutes');
     const minutesSinceSunset = now.diff(sunset, 'minutes');
@@ -546,13 +528,11 @@ function setupVisibilityModal(modalTitle, modalBody) {
     // Create Array for Chart Data
     let chartData = [];
     let chartData1 = [];
-    forecastHourlyData.forEach((data) => {
-        if (moment().isSame(moment.utc(data['datetime']), 'day')) {
-            chartData1.push({
-                x: moment.utc(data['datetime']).format("X") * 1000,
-                y: data['visibility']
-            });
-        }
+    minuteData.forEach((data) => {
+        chartData1.push({
+            x: moment.utc(data['logdate']).format("X") * 1000,
+            y: data['visibility']
+        });
     });
     chartData.push({ name: "Sigtbarhed", type: 'line', data: chartData1 });
 
