@@ -186,7 +186,7 @@ function drawWindCompass(bearing, windspeed) {
 
     // Draw the compass Letters
     ctx.beginPath();
-    ctx.font = '10px Roboto';
+    ctx.font = 'normal 400 10px Roboto';
     ctx.fillStyle = cssVar("color-disabled");
     ctx.textAlign = 'center';
     ctx.textBaseline = "middle";
@@ -229,21 +229,21 @@ function drawWindCompass(bearing, windspeed) {
     // Draw Text Inside
     const cardinal = windDegreeToCardinal(bearing);
     ctx.beginPath();
-    ctx.font = '400 1.2em Roboto';
+    ctx.font = 'normal 400 1.2em Roboto, sans-serif';
     ctx.fillStyle = cssVar("color-disabled");
     ctx.textAlign = 'center';
     ctx.textBaseline = "middle";
     ctx.fillText(cardinal, centerX, centerY - (insideMargin + margin));
     ctx.stroke();
     ctx.beginPath();
-    ctx.font = '300 2.1em Roboto';
+    ctx.font = 'normal 300 2.1em Roboto, sans-serif';
     ctx.fillStyle = cssVar("color-disabled");
     ctx.textAlign = 'center';
     ctx.textBaseline = "middle";
     ctx.fillText(windspeed, centerX, centerY);
     ctx.stroke();
     ctx.beginPath();
-    ctx.font = '400 1em Roboto';
+    ctx.font = 'normal 400 1em Roboto, sans-serif';
     ctx.fillStyle = cssVar("color-disabled");
     ctx.textAlign = 'center';
     ctx.textBaseline = "middle";
