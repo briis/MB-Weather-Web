@@ -43,7 +43,7 @@ function drawSunHorizon(sunCanvas, sunrise, nextSunrise, sunset, anglePosition, 
 
     // Place Horizon text
     ctx.beginPath();
-    ctx.font = '0.75em Roboto';
+    ctx.font = 'normal 400 0.75em Roboto';
     ctx.fillStyle = cssVar("sun-arc-text");
     ctx.textAlign = 'center';
     ctx.textBaseline = "middle";
@@ -61,7 +61,7 @@ function drawSunHorizon(sunCanvas, sunrise, nextSunrise, sunset, anglePosition, 
 
     // Place sunrise text
     ctx.beginPath();
-    ctx.font = '0.95em Roboto';
+    ctx.font = 'normal 400 0.95em Roboto';
     ctx.fillStyle = cssVar("sun-arc-text-disabled");
     ctx.textAlign = 'center';
     ctx.textBaseline = "middle";
@@ -70,7 +70,7 @@ function drawSunHorizon(sunCanvas, sunrise, nextSunrise, sunset, anglePosition, 
 
     // Place sunrise text
     ctx.beginPath();
-    ctx.font = '1.3em Roboto';
+    ctx.font = 'normal 400 1.3em Roboto';
     ctx.fillStyle = cssVar("sun-arc-text");
     ctx.textAlign = 'center';
     ctx.textBaseline = "middle";
@@ -93,7 +93,7 @@ function drawSunHorizon(sunCanvas, sunrise, nextSunrise, sunset, anglePosition, 
 
     // Place sunset text
     ctx.beginPath();
-    ctx.font = '0.95em Roboto';
+    ctx.font = 'normal 400 0.95em Roboto';
     ctx.fillStyle = cssVar("sun-arc-text-disabled");
     ctx.textAlign = 'center';
     ctx.textBaseline = "middle";
@@ -102,7 +102,7 @@ function drawSunHorizon(sunCanvas, sunrise, nextSunrise, sunset, anglePosition, 
 
     // Place sunset text
     ctx.beginPath();
-    ctx.font = '1.3em Roboto';
+    ctx.font = 'normal 400 1.3em Roboto';
     ctx.fillStyle = cssVar("sun-arc-text");
     ctx.textAlign = 'center';
     ctx.textBaseline = "middle";
