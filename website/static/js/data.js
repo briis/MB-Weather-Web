@@ -86,7 +86,7 @@ function getWeatherData() {
             document.getElementById("valFeelsLike").innerHTML = data.feels_like_temperature + degrees;
             document.getElementById("valTempMax").innerHTML = data.tempmax + degrees;
             document.getElementById("valTempMin").innerHTML = data.tempmin + degrees;
-            document.getElementById("valWindgust").innerHTML = data.windgust + windspeedUnit;
+            document.getElementById("valWindgust").innerHTML = data.windgust + `<span class="text-secondary"> m/s</span>`;
             // ** Wind Widget **
             drawWindCompass(data.windbearing, data.windspeedavg);
             // windirGauge.value = data.windbearing;

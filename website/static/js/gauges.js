@@ -243,7 +243,7 @@ function drawWindCompass(bearing, windspeed) {
     ctx.fillText(windspeed, centerX, centerY);
     ctx.stroke();
     ctx.beginPath();
-    ctx.font = 'normal 400 1em Roboto, sans-serif';
+    ctx.font = 'normal 300 1em Roboto, sans-serif';
     ctx.fillStyle = cssVar("color-disabled");
     ctx.textAlign = 'center';
     ctx.textBaseline = "middle";
