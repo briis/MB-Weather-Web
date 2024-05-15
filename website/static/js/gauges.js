@@ -229,14 +229,14 @@ function drawWindCompass(bearing, windspeed) {
     // Draw Text Inside
     const cardinal = windDegreeToCardinal(bearing);
     ctx.beginPath();
-    ctx.font = 'normal 400 1.2em Roboto, sans-serif';
+    ctx.font = 'normal 300 1.2em Roboto, sans-serif';
     ctx.fillStyle = cssVar("color-disabled");
     ctx.textAlign = 'center';
     ctx.textBaseline = "middle";
     ctx.fillText(cardinal, centerX, centerY - (insideMargin + margin));
     ctx.stroke();
     ctx.beginPath();
-    ctx.font = 'normal 300 2.1em Roboto, sans-serif';
+    ctx.font = 'normal 200 2.1em Roboto, sans-serif';
     ctx.fillStyle = cssVar("color-disabled");
     ctx.textAlign = 'center';
     ctx.textBaseline = "middle";

@@ -1,3 +1,3 @@
-VERSION = "2.1.1"
+VERSION = "2.1.2"
 
 WEB_TITLE = "Vejret i Toftebuen"

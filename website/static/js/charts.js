@@ -157,7 +157,7 @@ function chartWithTwoDataSets(data, unit, chart1Color, chart2Color, fillType = "
             }
         },
         noData: {
-            text: 'Henter data...'
+            text: 'Ingen data...'
         }
     }
     return options;
