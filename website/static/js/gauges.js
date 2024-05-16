@@ -236,8 +236,8 @@ function drawWindCompass(bearing, windspeed) {
     ctx.fillText(cardinal, centerX, centerY - (insideMargin + margin));
     ctx.stroke();
     ctx.beginPath();
-    ctx.font = 'normal 200 2.1em Roboto, sans-serif';
-    ctx.fillStyle = cssVar("color-disabled");
+    ctx.font = 'normal 300 2.1em Roboto, sans-serif';
+    ctx.fillStyle = cssVar("color-gray-700");
     ctx.textAlign = 'center';
     ctx.textBaseline = "middle";
     ctx.fillText(windspeed, centerX, centerY);
@@ -247,7 +247,7 @@ function drawWindCompass(bearing, windspeed) {
     ctx.fillStyle = cssVar("color-disabled");
     ctx.textAlign = 'center';
     ctx.textBaseline = "middle";
-    ctx.fillText('m/s', centerX, centerY + margin * 4);
+    ctx.fillText('m/s', centerX, centerY + margin * 4.5);
     ctx.stroke();
 
     function draw_rectangle(x, y, w, h, deg, ctx) {

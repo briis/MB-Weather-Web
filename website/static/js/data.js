@@ -86,15 +86,9 @@ function getWeatherData() {
             document.getElementById("valFeelsLike").innerHTML = data.feels_like_temperature + degrees;
             document.getElementById("valTempMax").innerHTML = data.tempmax + degrees;
             document.getElementById("valTempMin").innerHTML = data.tempmin + degrees;
-            document.getElementById("valWindgust").innerHTML = data.windgust + `<span class="text-secondary"> m/s</span>`;
+            document.getElementById("valWindgust").innerHTML = data.windgust.toFixed(1) + `<span class="text-secondary"> m/s</span>`;
             // ** Wind Widget **
-            drawWindCompass(data.windbearing, data.windspeedavg);
-            // windirGauge.value = data.windbearing;
-            // windirGauge.update({
-            //     units: `${data.windspeedavg.toFixed(1)} m/s`,
-            //     title: `${data.windbearing}${String.fromCharCode(176)}`,
-            // });
-            // document.getElementById("valWinddir").innerHTML = `${windDegreeToCardinal(data.windbearing)}`;
+            drawWindCompass(data.windbearing, data.windspeedavg.toFixed(1));
             // ** Rain Widget **
             document.getElementById("valRainToday").innerHTML = data.raintoday.toFixed(1) + rainUnit;
             // document.getElementById("valRainForecastToday").innerHTML = '';
