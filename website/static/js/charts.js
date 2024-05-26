@@ -1,4 +1,122 @@
 // *************************************
+// CHART GLOBALS
+// *************************************
+Apex.chart = {
+    locales: [
+        {
+            "name": "da",
+            "options": {
+                "months": [
+                    "januar",
+                    "februar",
+                    "marts",
+                    "april",
+                    "maj",
+                    "juni",
+                    "juli",
+                    "august",
+                    "september",
+                    "oktober",
+                    "november",
+                    "december"
+                ],
+                "shortMonths": [
+                    "jan",
+                    "feb",
+                    "mar",
+                    "apr",
+                    "maj",
+                    "jun",
+                    "jul",
+                    "aug",
+                    "sep",
+                    "okt",
+                    "nov",
+                    "dec"
+                ],
+                "days": [
+                    "Søndag",
+                    "Mandag",
+                    "Tirsdag",
+                    "Onsdag",
+                    "Torsdag",
+                    "Fredag",
+                    "Lørdag"
+                ],
+                "shortDays": ["Søn", "Man", "Tir", "Ons", "Tor", "Fre", "Lør"],
+                "toolbar": {
+                    "exportToSVG": "Download SVG",
+                    "exportToPNG": "Download PNG",
+                    "exportToCSV": "Download CSV",
+                    "menu": "Menu",
+                    "selection": "Valg",
+                    "selectionZoom": "Zoom til valg",
+                    "zoomIn": "Zoom ind",
+                    "zoomOut": "Zoom ud",
+                    "pan": "Panorér",
+                    "reset": "Nulstil zoom"
+                }
+            }
+        },
+        {
+            "name": "en",
+            "options": {
+                "months": [
+                    "January",
+                    "February",
+                    "March",
+                    "April",
+                    "May",
+                    "June",
+                    "July",
+                    "August",
+                    "September",
+                    "October",
+                    "November",
+                    "December"
+                ],
+                "shortMonths": [
+                    "Jan",
+                    "Feb",
+                    "Mar",
+                    "Apr",
+                    "May",
+                    "Jun",
+                    "Jul",
+                    "Aug",
+                    "Sep",
+                    "Oct",
+                    "Nov",
+                    "Dec"
+                ],
+                "days": [
+                    "Sunday",
+                    "Monday",
+                    "Tuesday",
+                    "Wednesday",
+                    "Thursday",
+                    "Friday",
+                    "Saturday"
+                ],
+                "shortDays": ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+                "toolbar": {
+                    "exportToSVG": "Download SVG",
+                    "exportToPNG": "Download PNG",
+                    "exportToCSV": "Download CSV",
+                    "menu": "Menu",
+                    "selection": "Selection",
+                    "selectionZoom": "Selection Zoom",
+                    "zoomIn": "Zoom In",
+                    "zoomOut": "Zoom Out",
+                    "pan": "Panning",
+                    "reset": "Reset Zoom"
+                }
+            }
+        }],
+    defaultLocale: "da"
+};
+
+// *************************************
 // ONE-AXIS CHART
 // *************************************
 
