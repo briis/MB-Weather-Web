@@ -20,8 +20,12 @@ let forecastDailyData = [];
 let forecastHourlyData = [];
 let liveData = [];
 let minuteData = [];
+let dailyData = [];
 let monthData = [];
 
+let caller;
+let chart = null;
+let chartDaily = null;
 // *************************************
 // STARTUP FUNCTIONS
 // *************************************
@@ -53,16 +57,15 @@ $('document').ready(function () {
     if (modalDefinition) {
         modalDefinition.addEventListener('show.bs.modal', function (event) {
             const triggerLink = event.relatedTarget;
-            const caller = triggerLink.getAttribute('data-bs-caller');
+            caller = triggerLink.getAttribute('data-bs-caller');
             displayModal(caller);
         });
         modalDefinition.addEventListener('hidden.bs.modal', function () {
-            const modalTitle = document.querySelector('.modal-title');
-            const modalIcon = document.querySelector('.modal-icon');
             const modalBody = document.querySelector('.modal-body');
-            modalTitle.innerHTML = 'Funktion ikke udviklet';
-            modalBody.innerHTML = 'Denne funktion er under udvikling. Kom tilbage senere.';
-            modalIcon.innerHTML = `<span class="material-icons circle-font bg-grey">info</span>`;
+            modalBody.innerHTML = getChartModalLayout();
+        });
+        modalDefinition.addEventListener('shown.bs.tab', function (e) {
+            drawCharts(caller, e.target.id);
         });
     }
 });
@@ -269,6 +272,21 @@ function loadChartData() {
         },
         error: function (error) {
             console.log('Minute Chart Data load error: ' + error);
+        }
+    });
+    $.ajax({
+        url: "/api/daily_data",
+        type: "GET",
+        async: true,
+        data: {
+            format: 'json'
+        },
+        dataType: 'json',
+        success: function (data) {
+            dailyData = data;
+        },
+        error: function (error) {
+            console.log('Daily Chart Data load error: ' + error);
         }
     });
     $.ajax({

@@ -127,36 +127,15 @@ function setupTemperatureModal(modalTitle, modalBody) {
     description += `. ${feelsLikeToText(liveData.feels_like_temperature)} Temperaturen i dag vil blive mellem ${liveData.tempmin}&deg; og ${liveData.tempmax}&deg;.`;
     const explainHdr = 'Om Føles som-temperaturen';
     const explainText = `Føles som-temperaturen angiver hvor varmt eller koldt det føles, og kan afvige fra den faktiske temperatur. Luftfugtighed og vindforhold kan påvirke Føles som-temperaturen.`;
-    html = getChartModalLayout(
-        `${liveData.temperature}&deg;`,
-        `Føles som ${liveData.feels_like_temperature}&deg;`,
-        'Daglig oversigt',
-        description,
-        explainHdr,
-        explainText
-    );
-    modalBody.innerHTML = html;
+    document.getElementById("topValue1").innerHTML = `${liveData.temperature}&deg;`;
+    document.getElementById("topValue2").innerHTML = `Føles som ${liveData.feels_like_temperature}&deg;`;
+    document.getElementById("descriptionHdr").innerHTML = 'Daglig oversigt';
+    document.getElementById("description").innerHTML = description;
+    document.getElementById("explainHdr").innerHTML = explainHdr;
+    document.getElementById("explainText").innerHTML = explainText;
 
-    // Build Chart
-    let chartData = [];
-    let chartData1 = [];
-    let chartData2 = [];
-    minuteData.forEach((data) => {
-        chartData1.push({
-            x: moment.utc(data['logdate']).format("X") * 1000,
-            y: data['temperature']
-        });
-        chartData2.push({
-            x: moment.utc(data['logdate']).format("X") * 1000,
-            y: data['dewpoint']
-        });
-    });
-    chartData.push({ name: "Temperatur", type: 'area', data: chartData1 });
-    chartData.push({ name: "Dugpunkt", type: 'line', data: chartData2 });
-
-    let options = chartWithTwoDataSets(chartData, '°', cssVar("color-blue"), cssVar("color-red"));
-    let chart = new ApexCharts(document.getElementById("chartModal"), options);
-    chart.render();
+    // Switch to 24 Hour Chart
+    $("#chartTab li:eq(0) a").tab("show");
 
 }
 
@@ -174,36 +153,15 @@ function setupWindModal(modalTitle, modalBody) {
     description += `Vindhastigheden i dag vil være op til ${forecastDailyData[0].wind_speed.toFixed(1)} m/s, med vindstød op til ${forecastDailyData[0].wind_gust.toFixed(1)} m/s.`;
     const explainHdr = 'Om Vindhastighed og Vindstød';
     const explainText = `Vindhastigheden beregnes vha. gennemsnittet over en kort periode. Et vindstød er et kort øjeblik med kastevind, der ligger over dette gennemsnit. Vindstød varer normalt under 20 sekunder`;
-    html = getChartModalLayout(
-        `${liveData.windspeedavg}<sup class="fw-light text-secondary">m/s</sup> <span class="fs-7 fw-light text-secondary">${windDegreeToCardinal(liveData.windbearing)}</span>`,
-        `Vindstød ${liveData.windgust} m/s`,
-        'Daglig oversigt',
-        description,
-        explainHdr,
-        explainText
-    );
-    modalBody.innerHTML = html;
+    document.getElementById("topValue1").innerHTML = `${liveData.windspeedavg}<sup class="fw-light text-secondary">m/s</sup> <span class="fs-7 fw-light text-secondary">${windDegreeToCardinal(liveData.windbearing)}</span>`;
+    document.getElementById("topValue2").innerHTML = `Vindstød ${liveData.windgust} m/s`;
+    document.getElementById("descriptionHdr").innerHTML = 'Daglig oversigt';
+    document.getElementById("description").innerHTML = description;
+    document.getElementById("explainHdr").innerHTML = explainHdr;
+    document.getElementById("explainText").innerHTML = explainText;
 
-    // Build Chart
-    let chartData = [];
-    let chartData1 = [];
-    let chartData2 = [];
-    minuteData.forEach((data) => {
-        chartData1.push({
-            x: moment.utc(data['logdate']).format("X") * 1000,
-            y: data['wind_speed']
-        });
-        chartData2.push({
-            x: moment.utc(data['logdate']).format("X") * 1000,
-            y: data['wind_gust']
-        });
-    });
-    chartData.push({ name: "Hastighed", type: 'area', data: chartData1 });
-    chartData.push({ name: "Vindstød", type: 'line', data: chartData2 });
-
-    let options = chartWithTwoDataSets(chartData, ' m/s', cssVar("color-green"), cssVar("color-orange"));
-    let chart = new ApexCharts(document.getElementById("chartModal"), options);
-    chart.render();
+    // Switch to 24 Hour Chart
+    $("#chartTab li:eq(0) a").tab("show");
 }
 
 
@@ -221,39 +179,15 @@ function setupRainModal(modalTitle, modalBody) {
     description += `I dag vil den samlede mængde nedbør være ${forecastDailyData[0].precipitation} mm.`;
     const explainHdr = '';
     const explainText = ``;
-    html = getChartModalLayout(
-        `${liveData.raintoday.toFixed(1)}<sup class="fw-light text-secondary">mm</sup>`,
-        `I alt i dag`,
-        'Daglig oversigt',
-        description,
-        explainHdr,
-        explainText
-    );
-    modalBody.innerHTML = html;
+    document.getElementById("topValue1").innerHTML = `${liveData.raintoday.toFixed(1)}<sup class="fw-light text-secondary">mm</sup>`;
+    document.getElementById("topValue2").innerHTML = `I alt i dag`;
+    document.getElementById("descriptionHdr").innerHTML = 'Daglig oversigt';
+    document.getElementById("description").innerHTML = description;
+    document.getElementById("explainHdr").innerHTML = explainHdr;
+    document.getElementById("explainText").innerHTML = explainText;
 
-    // Build Chart
-    let chartData = [];
-    let chartData1 = [];
-    let chartData2 = [];
-    minuteData.forEach((data) => {
-        chartData1.push({
-            x: moment.utc(data['logdate']).format("X") * 1000,
-            y: data['rain_hour']
-        });
-        chartData2.push({
-            x: moment.utc(data['logdate']).format("X") * 1000,
-            y: data['rain_day']
-        });
-    });
-    chartData.push({ name: "Nedbør", type: 'area', data: chartData1 });
-    chartData.push({ name: "Nedbør i dag", type: 'line', data: chartData2 });
-    if (chartData1.length > 1) {
-        let options = chartWithTwoDataSetsScales(chartData, ' mm', cssVar("color-blue"), cssVar("color-green"), 'gradient', 1);
-        let chart = new ApexCharts(document.getElementById("chartModal"), options);
-        chart.render();
-    } else {
-        document.getElementById("chartModal").innerHTML = `<div class="p-4 fs-4 text-center text-secondary">Ingen nedbør de sidste 24 timer</div>`;
-    }
+    // Switch to 24 Hour Chart
+    $("#chartTab li:eq(0) a").tab("show");
 }
 
 // *************************************
@@ -270,30 +204,16 @@ function setupUVModal(modalTitle, modalBody) {
     let description = ``;
     const explainHdr = 'Om UV-indekset';
     const explainText = `Verdenssundhedsorganisationens UV-indeks (UVI) måler ultraviolet stråling. Jo højere UVI-niveauet, desto større er risikoen for at få solskader og jo hurtigere kan skader opstå. UVI-niveauet kan hjælpe dig med at beslutte, hvornår du skal beskytte dig mod solen, og hvornår du skal undgå at være udenfor. Verdenssundhedsorganisationen anbefaler at gå i skygge samt brug af solcreme, hat og beskyttende tøj, hvis niveauet er 3 (moderat) eller højere.`;
-    html = getChartModalLayout(
-        `${liveData.uv.toFixed(1)} <span class="fw-light text-secondary">${uvindexToText(liveData.uv)}</span>`,
-        `UV-Indeks fra Verdenssundhedsorganisationen`,
-        descriptionHdr,
-        description,
-        explainHdr,
-        explainText
-    );
-    modalBody.innerHTML = html;
+    document.getElementById("topValue1").innerHTML = `${liveData.uv.toFixed(1)} <span class="fw-light text-secondary">${uvindexToText(liveData.uv)}</span>`;
+    document.getElementById("topValue2").innerHTML = `UV-Indeks fra Verdenssundhedsorganisationen`;
+    document.getElementById("descriptionHdr").innerHTML = 'Daglig oversigt';
+    document.getElementById("description").innerHTML = description;
+    document.getElementById("explainHdr").innerHTML = explainHdr;
+    document.getElementById("explainText").innerHTML = explainText;
 
-    // Build Chart
-    let chartData = [];
-    let chartData1 = [];
-    minuteData.forEach((data) => {
-        chartData1.push({
-            x: moment.utc(data['logdate']).format("X") * 1000,
-            y: data['uv']
-        });
-    });
-    chartData.push({ name: "UV Indeks", type: 'bar', data: chartData1 });
+    // Switch to 24 Hour Chart
+    $("#chartTab li:eq(0) a").tab("show");
 
-    let options = chartWithOneDataSet(chartData, '', cssVar("color-amber"));
-    let chart = new ApexCharts(document.getElementById("chartModal"), options);
-    chart.render();
 }
 
 
@@ -362,31 +282,16 @@ function setupSunModal(modalTitle, modalBody) {
     const descriptionHdr = ``;
     const explainHdr = '';
     const explainText = ``;
-    html = getChartModalLayout(
-        `${sunTime.format('HH:mm')}`,
-        `${remDayLight}`,
-        descriptionHdr,
-        description,
-        explainHdr,
-        explainText
-    );
-    modalBody.innerHTML = html;
+    document.getElementById("topValue1").innerHTML = `${sunTime.format('HH:mm')}`;
+    document.getElementById("topValue2").innerHTML = `${remDayLight}`;
+    document.getElementById("descriptionHdr").innerHTML = descriptionHdr;
+    document.getElementById("description").innerHTML = description;
+    document.getElementById("explainHdr").innerHTML = explainHdr;
+    document.getElementById("explainText").innerHTML = explainText;
 
-    document.getElementById("chartModal").innerHTML = '<div class="sun-container"><canvas class="canvas-sun" id="sunCanvas" width=250 height=250></canvas></div>'
-    const now = moment();
-    const minutesSinceSunrise = now.diff(sunrise, 'minutes');
-    const minutesSinceSunset = now.diff(sunset, 'minutes');
-    const daylightMinutes = sunset.diff(sunrise, 'minutes');
-    const nightMinutes = 1440 - daylightMinutes;
-    let isDay = true;
-    if (now > sunset && now < sunriseNext) { isDay = false; }
-    let anglePosition = 0;
-    if (isDay) {
-        anglePosition = 2 - (daylightMinutes - minutesSinceSunrise) / daylightMinutes;
-    } else {
-        anglePosition = minutesSinceSunset / nightMinutes;
-    }
-    drawSunHorizon('sunCanvas', sunrise.format('HH:mm'), sunriseNext.format('HH:mm'), sunset.format('HH:mm'), anglePosition, isDay);
+    // Switch to 24 Hour Chart
+    $("#chartTab li:eq(0) a").tab("show");
+
 }
 
 
@@ -399,8 +304,7 @@ function setupHumidityModal(modalTitle, modalBody) {
     modalHeaderIcon.innerHTML = `<span class="material-icons circle-font bg-blue">dew_point</span>`;
     modalTitle.innerHTML = "Dagsoversigt - Luftfugtighed";
 
-    // Create Array for Chart Data
-    let chartData = [];
+    // Create Array for Calculation
     let chartData1 = [];
     minuteData.forEach((data) => {
         chartData1.push({
@@ -408,7 +312,6 @@ function setupHumidityModal(modalTitle, modalBody) {
             y: data['humidity']
         });
     });
-    chartData.push({ name: "Luftfugtighed", type: 'area', data: chartData1 });
     const avgHumidity = chartData1.reduce((a, b) => a + b.y, 0) / chartData1.length;
 
     // Set modal body
@@ -416,20 +319,16 @@ function setupHumidityModal(modalTitle, modalBody) {
     const description = `Den gennemsnitlige luftfugtighed de sidste 24 timer er ${avgHumidity.toFixed(0)}%`;
     const explainHdr = 'Om luftfugtighed';
     const explainText = `Relativ luftfugtighed, som almindeligvis blot kaldes luftfugtighed, er mængden af fugt i luften i forhold til, hvad luften kan indeholde. Luften kan indeholde mere fugt ved høje temperaturer. En relativ luftfugtighed tæt på 100% betyder, at der kan opstå dug eller tåge.`;
-    html = getChartModalLayout(
-        `${liveData.humidity.toFixed(0)}%`,
-        `Dugpunktet er ${liveData.dewpoint.toFixed(1)}&deg;`,
-        descriptionHdr,
-        description,
-        explainHdr,
-        explainText
-    );
-    modalBody.innerHTML = html;
+    document.getElementById("topValue1").innerHTML = `${liveData.humidity.toFixed(0)}%`;
+    document.getElementById("topValue2").innerHTML = `Dugpunktet er ${liveData.dewpoint.toFixed(1)}&deg;`;
+    document.getElementById("descriptionHdr").innerHTML = descriptionHdr;
+    document.getElementById("description").innerHTML = description;
+    document.getElementById("explainHdr").innerHTML = explainHdr;
+    document.getElementById("explainText").innerHTML = explainText;
 
-    // Build Chart
-    let options = chartWithOneDataSet(chartData, '%', cssVar("color-blue"));
-    let chart = new ApexCharts(document.getElementById("chartModal"), options);
-    chart.render();
+    // Switch to 24 Hour Chart
+    $("#chartTab li:eq(0) a").tab("show");
+
 }
 
 
@@ -442,8 +341,7 @@ function setupPressureModal(modalTitle, modalBody) {
     modalHeaderIcon.innerHTML = `<span class="material-icons circle-font bg-red">speed</span>`;
     modalTitle.innerHTML = "Dagsoversigt - Lufttryk";
 
-    // Create Array for Chart Data
-    let chartData = [];
+    // Create Array for Calculation
     let chartData1 = [];
     minuteData.forEach((data) => {
         chartData1.push({
@@ -451,7 +349,6 @@ function setupPressureModal(modalTitle, modalBody) {
             y: data['pressure']
         });
     });
-    chartData.push({ name: "Lufttryk", type: 'area', data: chartData1 });
     const avgPressure = chartData1.reduce((a, b) => a + b.y, 0) / chartData1.length;
 
     // Set modal body
@@ -459,20 +356,14 @@ function setupPressureModal(modalTitle, modalBody) {
     const description = `Det gennemsnitlige lufttryk de sidste 24 timer er ${avgPressure.toFixed(0)} hPa (Hektopascal)`;
     const explainHdr = 'Om lufttryk';
     const explainText = `Hurtige og betydelige ændringer i lufttrykket bruges til at forudsige vejrændringer. Faldende lufttryk kan for eksempel betyde, at der er regn eller sne på vej, mens stigende lufttryk kan betyde, at vejret er ved at blive bedre. Lufttryk kaldes også barometrisk tryk eller atmosfærisk tryk.`;
-    html = getChartModalLayout(
-        `${liveData.sealevelpressure.toFixed(0)} hPa`,
-        `${pressureTrend(liveData.pressuretrend)[0]}`,
-        descriptionHdr,
-        description,
-        explainHdr,
-        explainText
-    );
-    modalBody.innerHTML = html;
-
-    // Build Chart
-    let options = chartWithOneDataSet(chartData, 'hPa', cssVar("color-blue"));
-    let chart = new ApexCharts(document.getElementById("chartModal"), options);
-    chart.render();
+    document.getElementById("topValue1").innerHTML = `${liveData.sealevelpressure.toFixed(0)} hPa`;
+    document.getElementById("topValue2").innerHTML = `${pressureTrend(liveData.pressuretrend)[0]}`;
+    document.getElementById("descriptionHdr").innerHTML = descriptionHdr;
+    document.getElementById("description").innerHTML = description;
+    document.getElementById("explainHdr").innerHTML = explainHdr;
+    document.getElementById("explainText").innerHTML = explainText;
+    // Switch to 24 Hour Chart
+    $("#chartTab li:eq(0) a").tab("show");
 }
 
 // *************************************
@@ -484,36 +375,20 @@ function setupAqiModal(modalTitle, modalBody) {
     modalHeaderIcon.innerHTML = `<span class="material-icons circle-font bg-green">grain</span>`;
     modalTitle.innerHTML = "Dagsoversigt - Luftkvalitet";
 
-    // Create Array for Chart Data
-    let chartData = [];
-    let chartData1 = [];
-    minuteData.forEach((data) => {
-        chartData1.push({
-            x: moment.utc(data['logdate']).format("X") * 1000,
-            y: data['air_Quality_pm25']
-        });
-    });
-    chartData.push({ name: "Lufttryk", type: 'area', data: chartData1 });
-
     // Set modal body
     const descriptionHdr = `Sundhedsoplysninger`;
     const description = `${aqiValueToRecommend(liveData.aqi)}`;
     const explainHdr = 'Om PM2.5 Partikler';
     const explainText = `PM2.5 er en skala til måling af luftkvalitet i realtid. Dens værdier varierer fra 0 til større end 250.`;
-    html = getChartModalLayout(
-        `${liveData.pm25.toFixed(0)} PM<sup>2.5</sup>`,
-        `${aqiValueToText(liveData.aqi)}`,
-        descriptionHdr,
-        description,
-        explainHdr,
-        explainText
-    );
-    modalBody.innerHTML = html;
+    document.getElementById("topValue1").innerHTML = `${liveData.pm25.toFixed(0)} PM<sup>2.5</sup>`;
+    document.getElementById("topValue2").innerHTML = `${aqiValueToText(liveData.aqi)}`;
+    document.getElementById("descriptionHdr").innerHTML = descriptionHdr;
+    document.getElementById("description").innerHTML = description;
+    document.getElementById("explainHdr").innerHTML = explainHdr;
+    document.getElementById("explainText").innerHTML = explainText;
 
-    // Build Chart
-    let options = chartWithOneDataSet(chartData, ` PM2.5`, cssVar("color-grey"));
-    let chart = new ApexCharts(document.getElementById("chartModal"), options);
-    chart.render();
+    // Switch to 24 Hour Chart
+    $("#chartTab li:eq(0) a").tab("show");
 }
 
 // *************************************
@@ -525,79 +400,490 @@ function setupVisibilityModal(modalTitle, modalBody) {
     modalHeaderIcon.innerHTML = `<span class="material-icons circle-font bg-green">visibility</span>`;
     modalTitle.innerHTML = "Dagsoversigt - Sigtbarhed";
 
-    // Create Array for Chart Data
-    let chartData = [];
-    let chartData1 = [];
-    minuteData.forEach((data) => {
-        chartData1.push({
-            x: moment.utc(data['logdate']).format("X") * 1000,
-            y: data['visibility']
-        });
-    });
-    chartData.push({ name: "Sigtbarhed", type: 'line', data: chartData1 });
 
     // Set modal body
     const descriptionHdr = `Daglig oversigt`;
     const description = `Sigtbarheden i dag vil være (Indsæt værdi)`;
     const explainHdr = 'Om Sigtbarhed';
     const explainText = `Sigtbarhed siger noget om, hvor langt væk du tydeligt kan se objekter som f.eks bygninger og bakker. Det er et mål for luftens gennemsigtighed og tager ikke højde for mængden af sollys eller tilstedeværelsen af ting der spærrer for udsynet. En sigtbarhed på mindst 10 km anses som klar sigtbarhed.`;
-    html = getChartModalLayout(
-        `${liveData.visibility.toFixed(0)} KM`,
-        `${visibilityText(liveData.visibility)}`,
-        descriptionHdr,
-        description,
-        explainHdr,
-        explainText
-    );
-    modalBody.innerHTML = html;
+    document.getElementById("topValue1").innerHTML = `${liveData.visibility.toFixed(0)} Km`;
+    document.getElementById("topValue2").innerHTML = `${visibilityText(liveData.visibility)}`;
+    document.getElementById("descriptionHdr").innerHTML = descriptionHdr;
+    document.getElementById("description").innerHTML = description;
+    document.getElementById("explainHdr").innerHTML = explainHdr;
+    document.getElementById("explainText").innerHTML = explainText;
 
-    // Build Chart
-    let options = chartWithOneDataSet(chartData, ` Km`, cssVar("color-green"), 'solid');
-    let chart = new ApexCharts(document.getElementById("chartModal"), options);
-    chart.render();
+    // Switch to 24 Hour Chart
+    $("#chartTab li:eq(0) a").tab("show");
+
 }
+
+// *************************************
+// CHART MODAL BUILD CHARTS
+// *************************************
+function drawCharts(chartType, tabSegment) {
+
+    switch (chartType) {
+        case 'temperature':
+            switch (tabSegment) {
+                case '24hourChartTab':
+                    if (chart != null) { chart.destroy(); }
+                    let chartData = [];
+                    let chartData1 = [];
+                    let chartData2 = [];
+                    minuteData.forEach((data) => {
+                        chartData1.push({
+                            x: moment.utc(data['logdate']).format("X") * 1000,
+                            y: data['temperature']
+                        });
+                        chartData2.push({
+                            x: moment.utc(data['logdate']).format("X") * 1000,
+                            y: data['dewpoint']
+                        });
+                    });
+                    chartData.push({ name: "Temperatur", type: 'area', data: chartData1 });
+                    chartData.push({ name: "Dugpunkt", type: 'line', data: chartData2 });
+
+                    let options = chartWithTwoDataSets(chartData, '°', 'HH:mm', 'ddd HH:mm', cssVar("color-blue"), cssVar("color-red"));
+                    chart = new ApexCharts(document.getElementById("chartModal"), options);
+                    chart.render();
+                    break;
+                case 'dailyChartTab':
+                    if (chartDaily != null) { chartDaily.destroy(); }
+                    let chartDataDaily = [];
+                    let chartDataDaily1 = [];
+                    let chartDataDaily2 = [];
+                    dailyData.forEach((data) => {
+                        chartDataDaily1.push({
+                            x: moment.utc(data['logdate']).format("X") * 1000,
+                            y: data['temperature_high']
+                        });
+                        chartDataDaily2.push({
+                            x: moment.utc(data['logdate']).format("X") * 1000,
+                            y: data['temperature_low']
+                        });
+                    });
+                    chartDataDaily.push({ name: "Temp Høj", type: 'line', data: chartDataDaily1 });
+                    chartDataDaily.push({ name: "Temp Lav", type: 'line', data: chartDataDaily2 });
+
+                    let optionsDaily = chartWithTwoDataSets(chartDataDaily, '°', 'dd', 'dd. MMM', cssVar("color-red"), cssVar("color-blue"), 'solid');
+                    chartDaily = new ApexCharts(document.getElementById("chartModalDaily"), optionsDaily);
+                    chartDaily.render();
+                    break;
+            }
+            break;
+        case 'wind':
+            switch (tabSegment) {
+                case '24hourChartTab':
+                    if (chart != null) { chart.destroy(); }
+                    let chartData = [];
+                    let chartData1 = [];
+                    let chartData2 = [];
+                    minuteData.forEach((data) => {
+                        chartData1.push({
+                            x: moment.utc(data['logdate']).format("X") * 1000,
+                            y: data['wind_speed']
+                        });
+                        chartData2.push({
+                            x: moment.utc(data['logdate']).format("X") * 1000,
+                            y: data['wind_gust']
+                        });
+                    });
+                    chartData.push({ name: "Hastighed", type: 'area', data: chartData1 });
+                    chartData.push({ name: "Vindstød", type: 'line', data: chartData2 });
+
+                    let options = chartWithTwoDataSets(chartData, ' m/s', 'HH:mm', 'ddd HH:mm', cssVar("color-green"), cssVar("color-orange"), 'gradient', 1);
+                    chart = new ApexCharts(document.getElementById("chartModal"), options);
+                    chart.render();
+                    break;
+                case 'dailyChartTab':
+                    if (chartDaily != null) { chartDaily.destroy(); }
+                    let chartDataDaily = [];
+                    let chartDataDaily1 = [];
+                    let chartDataDaily2 = [];
+                    dailyData.forEach((data) => {
+                        chartDataDaily1.push({
+                            x: moment.utc(data['logdate']).format("X") * 1000,
+                            y: data['wind_speed_max']
+                        });
+                        chartDataDaily2.push({
+                            x: moment.utc(data['logdate']).format("X") * 1000,
+                            y: data['wind_speed_avg']
+                        });
+                    });
+                    chartDataDaily.push({ name: "Vindstød", type: 'bar', data: chartDataDaily1 });
+                    chartDataDaily.push({ name: "Gns. vind", type: 'line', data: chartDataDaily2 });
+
+                    let optionsDaily = chartWithTwoDataSets(chartDataDaily, 'm/s', 'dd', 'dd. MMM', cssVar("color-green"), cssVar("color-orange"), 'gradient', 1);
+                    chartDaily = new ApexCharts(document.getElementById("chartModalDaily"), optionsDaily);
+                    chartDaily.render();
+                    break;
+            }
+            break;
+        case 'rain':
+            switch (tabSegment) {
+                case '24hourChartTab':
+                    if (chart != null) { chart.destroy(); }
+                    let chartData = [];
+                    let chartData1 = [];
+                    let chartData2 = [];
+                    minuteData.forEach((data) => {
+                        chartData1.push({
+                            x: moment.utc(data['logdate']).format("X") * 1000,
+                            y: data['rain_hour']
+                        });
+                        chartData2.push({
+                            x: moment.utc(data['logdate']).format("X") * 1000,
+                            y: data['rain_day']
+                        });
+                    });
+                    chartData.push({ name: "Nedbør", type: 'area', data: chartData1 });
+                    chartData.push({ name: "Nedbør i dag", type: 'line', data: chartData2 });
+
+                    let options = chartWithTwoDataSetsScales(chartData, ' mm', ' mm', 'HH:mm', 'ddd HH:mm', cssVar("color-blue"), cssVar("color-green"), 'gradient', 1, 1);
+                    chart = new ApexCharts(document.getElementById("chartModal"), options);
+                    chart.render();
+                    break;
+                case 'dailyChartTab':
+                    if (chartDaily != null) { chartDaily.destroy(); }
+                    let chartDataDaily = [];
+                    let chartDataDaily1 = [];
+                    dailyData.forEach((data) => {
+                        chartDataDaily1.push({
+                            x: moment.utc(data['logdate']).format("X") * 1000,
+                            y: data['rain_total']
+                        });
+                    });
+                    chartDataDaily.push({ name: "Regn", type: 'bar', data: chartDataDaily1 });
+
+                    let optionsDaily = chartWithOneDataSet(chartDataDaily, ' mm', 'dd', 'dd. MMM', cssVar("color-blue"));
+                    chartDaily = new ApexCharts(document.getElementById("chartModalDaily"), optionsDaily);
+                    chartDaily.render();
+                    break;
+            }
+            break;
+        case 'uv':
+            switch (tabSegment) {
+                case '24hourChartTab':
+                    if (chart != null) { chart.destroy(); }
+                    let chartData = [];
+                    let chartData1 = [];
+                    let chartData2 = [];
+                    minuteData.forEach((data) => {
+                        chartData1.push({
+                            x: moment.utc(data['logdate']).format("X") * 1000,
+                            y: data['uv']
+                        });
+                        chartData2.push({
+                            x: moment.utc(data['logdate']).format("X") * 1000,
+                            y: data['solar_radiation']
+                        });
+                    });
+                    chartData.push({ name: "UV Indeks", type: 'area', data: chartData1 });
+                    chartData.push({ name: "Solindstråling", type: 'line', data: chartData2 });
+
+                    let options = chartWithTwoDataSetsScales(chartData, ' UVI', ' W/m²', 'HH:mm', 'ddd HH:mm', cssVar("color-amber"), cssVar("color-green"), 'gradient', 1, 0);
+                    chart = new ApexCharts(document.getElementById("chartModal"), options);
+                    chart.render();
+                    break;
+                case 'dailyChartTab':
+                    if (chartDaily != null) { chartDaily.destroy(); }
+                    let chartDataDaily = [];
+                    let chartDataDaily1 = [];
+                    let chartDataDaily2 = [];
+                    dailyData.forEach((data) => {
+                        chartDataDaily1.push({
+                            x: moment.utc(data['logdate']).format("X") * 1000,
+                            y: data['uvindex_max']
+                        });
+                        chartDataDaily2.push({
+                            x: moment.utc(data['logdate']).format("X") * 1000,
+                            y: data['solar_radiation_max']
+                        });
+                    });
+                    chartDataDaily.push({ name: "UV Indeks", type: 'bar', data: chartDataDaily1 });
+                    chartDataDaily.push({ name: "Solindstråling", type: 'line', data: chartDataDaily2 });
+
+                    let optionsDaily = chartWithTwoDataSetsScales(chartDataDaily, ' UVI', ' W/m²', 'dd', 'dd. MMM', cssVar("color-amber"), cssVar("color-green"), 'gradient', 1, 0);
+                    chartDaily = new ApexCharts(document.getElementById("chartModalDaily"), optionsDaily);
+                    chartDaily.render();
+                    break;
+            }
+            break;
+        case 'sunriseset':
+            switch (tabSegment) {
+                case '24hourChartTab':
+                    document.getElementById("chartModal").innerHTML = '<div class="sun-container"><canvas class="canvas-sun" id="sunCanvas" width=250 height=250></canvas></div>'
+                    const sunrise = moment(moment.unix(forecastDailyData[0].sunriseepoch));
+                    const sunriseNext = moment(moment.unix(forecastDailyData[1].sunriseepoch));
+                    const sunset = moment(moment.unix(forecastDailyData[0].sunsetepoch));
+                    const daylength = dayLength(sunrise, sunset);
+
+                    const now = moment();
+                    const minutesSinceSunrise = now.diff(sunrise, 'minutes');
+                    const minutesSinceSunset = now.diff(sunset, 'minutes');
+                    const daylightMinutes = sunset.diff(sunrise, 'minutes');
+                    const nightMinutes = 1440 - daylightMinutes;
+                    let isDay = true;
+                    if (now > sunset && now < sunriseNext) { isDay = false; }
+                    let anglePosition = 0;
+                    if (isDay) {
+                        anglePosition = 2 - (daylightMinutes - minutesSinceSunrise) / daylightMinutes;
+                    } else {
+                        anglePosition = minutesSinceSunset / nightMinutes;
+                    }
+                    drawSunHorizon('sunCanvas', sunrise.format('HH:mm'), sunriseNext.format('HH:mm'), sunset.format('HH:mm'), anglePosition, isDay);
+
+                    break;
+                case 'dailyChartTab':
+                    if (chartDaily != null) { chartDaily.destroy(); }
+                    let chartDataDaily = [];
+                    let chartDataDaily1 = [];
+                    dailyData.forEach((data) => {
+                        chartDataDaily1.push({
+                            x: moment.utc(data['logdate']).format("X") * 1000,
+                            y: data['uvindex_max']
+                        });
+                    });
+                    chartDataDaily.push({ name: "UV Indeks", type: 'bar', data: chartDataDaily1 });
+
+                    let optionsDaily = chartWithOneDataSet(chartDataDaily, 'UVI', 'dd', 'dd. MMM', cssVar("color-orange"));
+                    chartDaily = new ApexCharts(document.getElementById("chartModalDaily"), optionsDaily);
+                    chartDaily.render();
+                    break;
+            }
+            break;
+        case 'humidity':
+            switch (tabSegment) {
+                case '24hourChartTab':
+                    if (chart != null) { chart.destroy(); }
+                    let chartData = [];
+                    let chartData1 = [];
+                    minuteData.forEach((data) => {
+                        chartData1.push({
+                            x: moment.utc(data['logdate']).format("X") * 1000,
+                            y: data['humidity']
+                        });
+                    });
+                    chartData.push({ name: "Luftfugtighed", type: 'area', data: chartData1 });
+
+                    let options = chartWithOneDataSet(chartData, '%', 'dd', 'dd. MMM', cssVar("color-blue"));
+                    chart = new ApexCharts(document.getElementById("chartModal"), options);
+                    chart.render();
+                    break;
+                case 'dailyChartTab':
+                    if (chartDaily != null) { chartDaily.destroy(); }
+                    let chartDataDaily = [];
+                    let chartDataDaily1 = [];
+                    let chartDataDaily2 = [];
+                    dailyData.forEach((data) => {
+                        chartDataDaily1.push({
+                            x: moment.utc(data['logdate']).format("X") * 1000,
+                            y: data['humidity_high']
+                        });
+                        chartDataDaily2.push({
+                            x: moment.utc(data['logdate']).format("X") * 1000,
+                            y: data['humidity_low']
+                        });
+                    });
+                    chartDataDaily.push({ name: "Luftfugtighed Høj", type: 'line', data: chartDataDaily1 });
+                    chartDataDaily.push({ name: "Luftfugtighed Lav", type: 'line', data: chartDataDaily2 });
+
+                    let optionsDaily = chartWithTwoDataSets(chartDataDaily, '%', 'dd', 'dd. MMM', cssVar("color-blue"), cssVar("color-green"), 'solid');
+                    chartDaily = new ApexCharts(document.getElementById("chartModalDaily"), optionsDaily);
+                    chartDaily.render();
+                    break;
+            }
+            break;
+        case 'pressure':
+            switch (tabSegment) {
+                case '24hourChartTab':
+                    if (chart != null) { chart.destroy(); }
+                    let chartData = [];
+                    let chartData1 = [];
+                    minuteData.forEach((data) => {
+                        chartData1.push({
+                            x: moment.utc(data['logdate']).format("X") * 1000,
+                            y: data['pressure']
+                        });
+                    });
+                    chartData.push({ name: "Lufttryk", type: 'area', data: chartData1 });
+
+                    let options = chartWithOneDataSet(chartData, ' hPa', 'dd', 'dd. MMM', cssVar("color-blue"));
+                    chart = new ApexCharts(document.getElementById("chartModal"), options);
+                    chart.render();
+                    break;
+                case 'dailyChartTab':
+                    if (chartDaily != null) { chartDaily.destroy(); }
+                    let chartDataDaily = [];
+                    let chartDataDaily1 = [];
+                    let chartDataDaily2 = [];
+                    dailyData.forEach((data) => {
+                        chartDataDaily1.push({
+                            x: moment.utc(data['logdate']).format("X") * 1000,
+                            y: data['pressure_high']
+                        });
+                        chartDataDaily2.push({
+                            x: moment.utc(data['logdate']).format("X") * 1000,
+                            y: data['pressure_low']
+                        });
+                    });
+                    chartDataDaily.push({ name: "Lufttryk Høj", type: 'line', data: chartDataDaily1 });
+                    chartDataDaily.push({ name: "Lufttryk Lav", type: 'line', data: chartDataDaily2 });
+
+                    let optionsDaily = chartWithTwoDataSets(chartDataDaily, ' hPa', 'dd', 'dd. MMM', cssVar("color-blue"), cssVar("color-green"), 'solid');
+                    chartDaily = new ApexCharts(document.getElementById("chartModalDaily"), optionsDaily);
+                    chartDaily.render();
+                    break;
+            }
+            break;
+        case 'aqi':
+            switch (tabSegment) {
+                case '24hourChartTab':
+                    if (chart != null) { chart.destroy(); }
+                    let chartData = [];
+                    let chartData1 = [];
+                    minuteData.forEach((data) => {
+                        chartData1.push({
+                            x: moment.utc(data['logdate']).format("X") * 1000,
+                            y: data['air_Quality_pm25']
+                        });
+                    });
+                    chartData.push({ name: "Luftkvalitet", type: 'area', data: chartData1 });
+
+                    let options = chartWithOneDataSet(chartData, ' PM2.5', 'dd', 'dd. MMM', cssVar("color-grey"));
+                    chart = new ApexCharts(document.getElementById("chartModal"), options);
+                    chart.render();
+                    break;
+                case 'dailyChartTab':
+                    if (chartDaily != null) { chartDaily.destroy(); }
+                    let chartDataDaily = [];
+                    let chartDataDaily1 = [];
+                    let chartDataDaily2 = [];
+                    dailyData.forEach((data) => {
+                        chartDataDaily1.push({
+                            x: moment.utc(data['logdate']).format("X") * 1000,
+                            y: data['air_quality_high']
+                        });
+                        chartDataDaily2.push({
+                            x: moment.utc(data['logdate']).format("X") * 1000,
+                            y: data['air_quality_low']
+                        });
+                    });
+                    chartDataDaily.push({ name: "Luftkvalitet Høj", type: 'line', data: chartDataDaily1 });
+                    chartDataDaily.push({ name: "Luftkvalitet Lav", type: 'line', data: chartDataDaily2 });
+
+                    let optionsDaily = chartWithTwoDataSets(chartDataDaily, ' PM2.5', 'dd', 'dd. MMM', cssVar("color-grey"), cssVar("color-orange"), 'solid');
+                    chartDaily = new ApexCharts(document.getElementById("chartModalDaily"), optionsDaily);
+                    chartDaily.render();
+                    break;
+            }
+            break;
+        case 'visibility':
+            switch (tabSegment) {
+                case '24hourChartTab':
+                    if (chart != null) { chart.destroy(); }
+                    let chartData = [];
+                    let chartData1 = [];
+                    minuteData.forEach((data) => {
+                        chartData1.push({
+                            x: moment.utc(data['logdate']).format("X") * 1000,
+                            y: data['visibility']
+                        });
+                    });
+                    chartData.push({ name: "Sigtbarhed", type: 'area', data: chartData1 });
+
+                    let options = chartWithOneDataSet(chartData, ' Km', 'dd', 'dd. MMM', cssVar("color-green"));
+                    chart = new ApexCharts(document.getElementById("chartModal"), options);
+                    chart.render();
+                    break;
+                case 'dailyChartTab':
+                    if (chartDaily != null) { chartDaily.destroy(); }
+                    let chartDataDaily = [];
+                    let chartDataDaily1 = [];
+                    let chartDataDaily2 = [];
+                    dailyData.forEach((data) => {
+                        chartDataDaily1.push({
+                            x: moment.utc(data['logdate']).format("X") * 1000,
+                            y: data['visibility_high']
+                        });
+                        chartDataDaily2.push({
+                            x: moment.utc(data['logdate']).format("X") * 1000,
+                            y: data['visibility_low']
+                        });
+                    });
+                    chartDataDaily.push({ name: "Sigtbarhed Høj", type: 'line', data: chartDataDaily1 });
+                    chartDataDaily.push({ name: "Sigtbarhed Lav", type: 'line', data: chartDataDaily2 });
+
+                    let optionsDaily = chartWithTwoDataSets(chartDataDaily, ' Km', 'dd', 'dd. MMM', cssVar("color-green"), cssVar("color-orange"), 'solid');
+                    chartDaily = new ApexCharts(document.getElementById("chartModalDaily"), optionsDaily);
+                    chartDaily.render();
+                    break;
+            }
+            break;
+    }
+};
 
 // *************************************
 // CHART MODAL HTML TEMPLATE
 // *************************************
-function getChartModalLayout(topValue1, topValue2, descriptionHdr, description, explainHdr, explainText) {
+function getChartModalLayout() {
     return `
-        <div class="container p-2">
-            <div class="row">
-                <div class="col">
-                    <div class="py-1 fs-5 fw-bold">${topValue1}</div>
-                </div>
+    <div class="container p-2">
+        <div class="row">
+            <div class="col">
+                <div class="py-1 fs-5 fw-bold" id="topValue1"></div>
             </div>
-            <div class="row">
-                <div class="col">
-                    <div class="mt-n1 mb-2 fs-7 text-secondary">${topValue2}</div>
-                </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="mt-n1 mb-2 fs-7 text-secondary" id="topValue2"></div>
             </div>
-            <div class="row">
-                <div class="col">
-                    <div class="p-0 m-0 pb-3" id="chartModal" width="400" height="250"></div>
-                </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="fs-6 fw-semibold" id="descriptionHdr"></div>
             </div>
-            <div class="row">
-                <div class="col">
-                    <div class="fs-6 fw-semibold">${descriptionHdr}</div>
-                </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="fs-7 text-secondary" id="description"></div>
             </div>
-            <div class="row">
-                <div class="col">
-                    <div class="fs-7 text-secondary">${description}</div>
-                 </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col">
+                <div class="fs-6 fw-semibold" id="explainHdr"></div>
             </div>
-            <div class="row mt-2">
-                <div class="col">
-                     <div class="fs-6 fw-semibold">${explainHdr}</div>
-                 </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="fs-7 text-secondary" id="explainText"></div>
             </div>
-            <div class="row">
-                 <div class="col">
-                     <div class="fs-7 text-secondary">${explainText}</div>
-                  </div>
+        </div>
+
+        <div class="row mt-2">
+            <div class="col">
+                <ul class="nav nav-tabs" id="chartTab">
+                    <li class="nav-item">
+                        <a class="nav-link" data-bs-toggle="tab" href="#24hourChart"
+                            id="24hourChartTab">24 timer</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-bs-toggle="tab" href="#dailyChart"
+                            id="dailyChartTab">Daglig</a>
+                    </li>
+                </ul>
+
             </div>
-     </div>
+        </div>
+        <div class="tab-content">
+            <div class="tab-pane fade container p-0 m-0 pb-3" id="24hourChart">
+                <div class="p-0 m-0 pb-3" id="chartModal" width="400" height="250"></div>
+            </div>
+            <div class="tab-pane fade container p-0 m-0 pb-3" id="dailyChart">
+                <div class="p-0 m-0 pb-3" id="chartModalDaily" width="400" height="250"></div>
+            </div>
+        </div>
+    </div>
     `;
 }

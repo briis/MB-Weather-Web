@@ -2,7 +2,7 @@
 // ONE-AXIS CHART
 // *************************************
 
-function chartWithOneDataSet(data, unit, chart1Color, fillType = "gradient") {
+function chartWithOneDataSet(data, unit, xFormat, tFormat, chart1Color, fillType = "gradient", decimals1 = 1) {
     let options = {
         chart: {
             height: 250,
@@ -39,8 +39,8 @@ function chartWithOneDataSet(data, unit, chart1Color, fillType = "gradient") {
         xaxis: {
             type: 'datetime',
             labels: {
-                datetimeUTC: false,
-                format: 'HH:mm',
+                datetimeUTC: true,
+                format: xFormat,
                 style: {
                     colors: [cssVar("color-disabled")],
                     fontSize: 12,
@@ -56,7 +56,11 @@ function chartWithOneDataSet(data, unit, chart1Color, fillType = "gradient") {
                     fontSize: 12,
                 },
                 formatter: function (value) {
-                    return parseInt(value) + unit;
+                    if (value != null) {
+                        return parseFloat(value.toFixed(decimals1)) + unit;
+                    } else {
+                        return 'Ingen data';
+                    }
                 },
             },
         },
@@ -72,7 +76,7 @@ function chartWithOneDataSet(data, unit, chart1Color, fillType = "gradient") {
         },
         tooltip: {
             x: {
-                format: 'HH:mm',
+                format: tFormat,
             }
         },
         noData: {
@@ -85,7 +89,7 @@ function chartWithOneDataSet(data, unit, chart1Color, fillType = "gradient") {
 // *************************************
 // TWO-AXIS CHART
 // *************************************
-function chartWithTwoDataSets(data, unit, chart1Color, chart2Color, fillType = "gradient") {
+function chartWithTwoDataSets(data, unit, xFormat, tFormat, chart1Color, chart2Color, fillType = "gradient", decimals1 = 0) {
     let options = {
         chart: {
             height: 250,
@@ -120,8 +124,8 @@ function chartWithTwoDataSets(data, unit, chart1Color, chart2Color, fillType = "
         xaxis: {
             type: 'datetime',
             labels: {
-                datetimeUTC: false,
-                format: 'HH:mm',
+                datetimeUTC: true,
+                format: xFormat,
                 style: {
                     colors: [cssVar("color-disabled")],
                     fontSize: 12,
@@ -137,7 +141,11 @@ function chartWithTwoDataSets(data, unit, chart1Color, chart2Color, fillType = "
                     fontSize: 12,
                 },
                 formatter: function (value) {
-                    return parseInt(value) + unit;
+                    if (value != null) {
+                        return parseFloat(value.toFixed(decimals1)) + unit;
+                    } else {
+                        return 'Ingen data';
+                    }
                 },
             },
         },
@@ -153,7 +161,7 @@ function chartWithTwoDataSets(data, unit, chart1Color, chart2Color, fillType = "
         },
         tooltip: {
             x: {
-                format: 'HH:mm',
+                format: tFormat,
             }
         },
         noData: {
@@ -167,7 +175,7 @@ function chartWithTwoDataSets(data, unit, chart1Color, chart2Color, fillType = "
 // *************************************
 // TWO-AXIS CHART WITH TWO Y-AXIS SCALES
 // *************************************
-function chartWithTwoDataSetsScales(data, unit, chart1Color, chart2Color, fillType = "gradient", decimals1 = 0) {
+function chartWithTwoDataSetsScales(data, unit, unit2, xFormat, tFormat, chart1Color, chart2Color, fillType = "gradient", decimals1 = 0, decimals2 = 0) {
     let options = {
         chart: {
             height: 250,
@@ -202,8 +210,8 @@ function chartWithTwoDataSetsScales(data, unit, chart1Color, chart2Color, fillTy
         xaxis: {
             type: 'datetime',
             labels: {
-                datetimeUTC: false,
-                format: 'HH:mm',
+                datetimeUTC: true,
+                format: xFormat,
                 style: {
                     colors: [cssVar("color-disabled")],
                     fontSize: 12,
@@ -221,7 +229,11 @@ function chartWithTwoDataSetsScales(data, unit, chart1Color, chart2Color, fillTy
                         fontSize: 12,
                     },
                     formatter: function (value) {
-                        return parseFloat(value.toFixed(decimals1)) + unit;
+                        if (value != null) {
+                            return parseFloat(value.toFixed(decimals1)) + unit;
+                        } else {
+                            return 'Ingen data';
+                        }
                     },
                 },
             },
@@ -236,7 +248,11 @@ function chartWithTwoDataSetsScales(data, unit, chart1Color, chart2Color, fillTy
                         fontSize: 12,
                     },
                     formatter: function (value) {
-                        return parseInt(value) + unit;
+                        if (value != null) {
+                            return parseFloat(value.toFixed(decimals2)) + unit;
+                        } else {
+                            return 'Ingen data';
+                        }
                     },
                 },
             },
@@ -253,7 +269,7 @@ function chartWithTwoDataSetsScales(data, unit, chart1Color, chart2Color, fillTy
         },
         tooltip: {
             x: {
-                format: 'HH:mm',
+                format: tFormat,
             }
         },
         noData: {

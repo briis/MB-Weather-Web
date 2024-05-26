@@ -65,6 +65,19 @@ async def minute_data():
 
 
 
+@views.route("/api/daily_data", methods=["GET"])
+async def daily_data():
+    weather = MeteobridgeSQL(current_app.config["MYSQL_HOST"], current_app.config["MYSQL_USER"], current_app.config["MYSQL_PASSWORD"], current_app.config["MYSQL_DB"])
+    await weather.async_init()
+    result: MonthlyData = await weather.async_get_daily_data(31)
+    await weather.async_disconnect()
+
+    result_array = []
+    for row in result:
+        result_array.append(row.__dict__)
+    return jsonify(result_array)
+
+
 @views.route("/api/monthly_data", methods=["GET"])
 async def monthly_data():
     weather = MeteobridgeSQL(current_app.config["MYSQL_HOST"], current_app.config["MYSQL_USER"], current_app.config["MYSQL_PASSWORD"], current_app.config["MYSQL_DB"])
