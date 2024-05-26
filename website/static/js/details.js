@@ -667,7 +667,7 @@ function drawCharts(chartType, tabSegment) {
                     });
                     chartData.push({ name: "Luftfugtighed", type: 'area', data: chartData1 });
 
-                    let options = chartWithOneDataSet(chartData, '%', 'dd', 'dd. MMM', cssVar("color-blue"));
+                    let options = chartWithOneDataSet(chartData, '%', 'HH:mm', 'ddd HH:mm', cssVar("color-blue"));
                     chart = new ApexCharts(document.getElementById("chartModal"), options);
                     chart.render();
                     break;
@@ -709,7 +709,7 @@ function drawCharts(chartType, tabSegment) {
                     });
                     chartData.push({ name: "Lufttryk", type: 'area', data: chartData1 });
 
-                    let options = chartWithOneDataSet(chartData, ' hPa', 'dd', 'dd. MMM', cssVar("color-blue"));
+                    let options = chartWithOneDataSet(chartData, ' hPa', 'HH:mm', 'ddd HH:mm', cssVar("color-blue"));
                     chart = new ApexCharts(document.getElementById("chartModal"), options);
                     chart.render();
                     break;
@@ -751,7 +751,7 @@ function drawCharts(chartType, tabSegment) {
                     });
                     chartData.push({ name: "Luftkvalitet", type: 'area', data: chartData1 });
 
-                    let options = chartWithOneDataSet(chartData, ' PM2.5', 'dd', 'dd. MMM', cssVar("color-grey"));
+                    let options = chartWithOneDataSet(chartData, ' PM2.5', 'HH:mm', 'ddd HH:mm', cssVar("color-grey"));
                     chart = new ApexCharts(document.getElementById("chartModal"), options);
                     chart.render();
                     break;
@@ -793,7 +793,7 @@ function drawCharts(chartType, tabSegment) {
                     });
                     chartData.push({ name: "Sigtbarhed", type: 'area', data: chartData1 });
 
-                    let options = chartWithOneDataSet(chartData, ' Km', 'dd', 'dd. MMM', cssVar("color-green"));
+                    let options = chartWithOneDataSet(chartData, ' Km', 'HH:mm', 'ddd HH:mm', cssVar("color-green"));
                     chart = new ApexCharts(document.getElementById("chartModal"), options);
                     chart.render();
                     break;
