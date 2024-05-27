@@ -85,8 +85,8 @@ function getWeatherData() {
         success: function (data) {
             liveData = data;
             // ** Temperature Widget **
-            document.getElementById("valTemperature").innerHTML = data.temperature + degrees;
-            document.getElementById("valFeelsLike").innerHTML = data.feels_like_temperature + degrees;
+            document.getElementById("valTemperature").innerHTML = data.temperature.toFixed(1) + degrees;
+            document.getElementById("valFeelsLike").innerHTML = data.feels_like_temperature.toFixed(1) + degrees;
             document.getElementById("valTempMax").innerHTML = data.tempmax + degrees;
             document.getElementById("valTempMin").innerHTML = data.tempmin + degrees;
             document.getElementById("valWindgust").innerHTML = data.windgust.toFixed(1) + `<span class="text-secondary"> m/s</span>`;
