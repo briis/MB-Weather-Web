@@ -528,14 +528,18 @@ function drawCharts(chartType, tabSegment) {
                     let chartData1 = [];
                     let chartData2 = [];
                     minuteData.forEach((data) => {
-                        chartData1.push({
-                            x: moment.utc(data['logdate']).format("X") * 1000,
-                            y: data['rain_hour']
-                        });
-                        chartData2.push({
-                            x: moment.utc(data['logdate']).format("X") * 1000,
-                            y: data['rain_day']
-                        });
+                        today = moment().format("YYYY-MM-DD");
+                        chartDate = moment.utc(data['logdate']).format("YYYY-MM-DD");
+                        if (today === chartDate) {
+                            chartData1.push({
+                                x: moment.utc(data['logdate']).format("X") * 1000,
+                                y: data['rain_hour']
+                            });
+                            chartData2.push({
+                                x: moment.utc(data['logdate']).format("X") * 1000,
+                                y: data['rain_day']
+                            });
+                        }
                     });
                     chartData.push({ name: "Nedbør", type: 'bar', data: chartData1 });
                     chartData.push({ name: "Nedbør i dag", type: 'line', data: chartData2 });
