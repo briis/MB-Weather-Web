@@ -537,7 +537,7 @@ function drawCharts(chartType, tabSegment) {
                             y: data['rain_day']
                         });
                     });
-                    chartData.push({ name: "Nedbør", type: 'area', data: chartData1 });
+                    chartData.push({ name: "Nedbør", type: 'bar', data: chartData1 });
                     chartData.push({ name: "Nedbør i dag", type: 'line', data: chartData2 });
 
                     let options = chartWithTwoDataSetsScales(chartData, ' mm', ' mm', 'HH:mm', 'ddd HH:mm', cssVar("color-blue"), cssVar("color-green"), 'gradient', 1, 1);
