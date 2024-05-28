@@ -332,6 +332,10 @@ img {
     margin-top: -1.4rem;
 }
 
+.mt-n5 {
+    margin-top: -2.5rem;
+}
+
 .sun-container {
     display: flex;
     flex-direction: column;

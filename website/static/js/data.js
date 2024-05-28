@@ -32,7 +32,7 @@ let chartDaily = null;
 $('document').ready(function () {
     moment.locale('da');
     // windirGauge = createWindDirGauge();
-    pressureGauge = createPressureGauge();
+    // pressureGauge = createPressureGauge();
     getWeatherData();
     getDailyForecastData();
     getHourlyForecastData();
@@ -109,11 +109,9 @@ function getWeatherData() {
             document.getElementById("valHumidity").innerHTML = data.humidity.toFixed(0) + '%';
             document.getElementById("valDewPointText").innerHTML = `Dugpunktet er ${data.dewpoint.toFixed(0)}${degrees} lige nu.`;
             // ** Pressure Widget **
-            pressureGauge.value = data.sealevelpressure;
-            pressureGauge.update();
+            drawPressureGauge(data.sealevelpressure.toFixed(0));
             pressure_values = pressureTrend(data.pressuretrend);
             document.getElementById('valPressureTrend').innerHTML = `<span class="material-icons material-font fs-8 ${pressure_values[2]}">${pressure_values[1]}</span> ${pressure_values[0]}`;
-            document.getElementById("valPressure").innerHTML = data.sealevelpressure.toFixed(0) + pressureUnit;
             // ** Visibility Widget **
             document.getElementById("valVisibility").innerHTML = data.visibility.toFixed(0) + visibilityUnit;
             document.getElementById("valVisibilityText").innerHTML = visibilityText(data.visibility);
