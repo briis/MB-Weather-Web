@@ -169,6 +169,11 @@ a:hover {
 }
 
 
+.bg-amber {
+    background: var(--color-amber);
+    color: var(--color-white);
+}
+
 .bg-blue {
     background: var(--color-blue);
     color: var(--color-white);
