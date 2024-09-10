@@ -574,9 +574,9 @@ function feelsLikeToText(temp) {
 
 // Is Dayligt increasing or decreasing
 function isDayLengthIncreasing() {
-    let summerSun = moment("21-03", "DD-MM");
-    let winterSun = moment("22-09", "DD-MM");
-    return moment().isBetween(summerSun, winterSun);
+    let summerSun = moment("21-06", "DD-MM");
+    let winterSun = moment("21-12", "DD-MM");
+    return moment().isBetween(winterSun, summerSun);
 }
 
 // Calculate Day Length
