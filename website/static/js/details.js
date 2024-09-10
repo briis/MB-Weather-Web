@@ -89,8 +89,11 @@ function setupForecastModal(modalTitle, modalBody) {
     html_d = ``;
     cnt = 1;
     forecastDailyData.every((data) => {
+        const date_string = moment.utc(data.datetime).format("ddd D. MMM");
+        const formatted_date = date_string.charAt(0).toUpperCase() + date_string.slice(1);
+
         html_d += `<div class="row ${isEvenRow(cnt)} align-items-center">`;
-        html_d += `<div class="col-4 fs-7 fw-semibold">${moment.utc(data.datetime).format("D. MMM")}`;
+        html_d += `<div class="col-4 fs-7 fw-semibold">${formatted_date}`;
         html_d += `<div class="row fw-normal">`;
         html_d += `<div class="col-4 fs-tiny text-nowrap">${data.conditions}</div>`;
         html_d += `</div>`;
