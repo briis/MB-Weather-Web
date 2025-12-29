@@ -1,7 +1,8 @@
 services:
   vejr_web:
-    container_name: Vejr Website
-    build: ./vejr_web
+    container_name: Vejr-Website
+    restart: always
+    build: ./vejr
     ports:
       - 5003:5003
     environment:
@@ -11,3 +12,4 @@ services:
   redis:
     container_name: redis
     image: redis:alpine
+    restart: always

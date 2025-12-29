@@ -2,6 +2,7 @@ aiohttp
 asyncio
 black
 coverage
+dotenv
 flake8
 flask[async]
 flask-login
@@ -9,7 +10,7 @@ mock
 mysql-connector-python
 pyflakes
 pylint
-pymeteobridgesql==1.3.0
+pymeteobridgesql==1.4.0
 pymysql
 pytest
 pytest-asyncio
